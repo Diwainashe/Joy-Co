@@ -134,7 +134,7 @@
       </div>
 
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-lg); text-align: center; color: var(--text-light);">
-        <p>&copy; 2025 Joy&Co. All rights reserved. | <a href="#" style="color: var(--jc-gold);">Privacy Policy</a> | Web Development: <a href="#" style="color: var(--jc-gold);">Diwainashe</a></p>
+        <p>&copy; <span id="year"></span> Joy&Co. All rights reserved. | <a href="#" style="color: var(--jc-gold);">Privacy Policy</a> | Web Development: <a href="#" style="color: var(--jc-gold);">Diwainashe</a></p>
       </div>
     </div>
   </footer>
@@ -210,6 +210,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('year').textContent = new Date().getFullYear();
+
       new NavManager({
         burgerId: 'nav-burger',
         linksId: 'nav-links',
