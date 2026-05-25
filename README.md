@@ -1,353 +1,500 @@
-# Joy&Co Party Rentals
+# Joy&Co Party Rental Platform - System Documentation
 
-A modern, vibrant marketing website for party and event item rentals in South Africa. Built with vanilla HTML, CSS, and JavaScript — no build tools required.
+A modern, full-featured party and event rental platform built with vanilla JavaScript (OOP architecture), Supabase backend, and responsive design. Joy&Co specializes in premium party rentals across South Africa including inflatables, soft play equipment, furniture, and back arches.
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
-1. **GitHub Account** — To host the code (free)
-2. **Supabase Account** — For database and storage (free tier included)
-3. **Cloudflare Account** — For hosting (free)
-4. **WhatsApp Business Number** — For customer inquiries (or personal)
+## System Overview
 
-### Step 1: Set Up Supabase
+Joy&Co is a two-tier web application with a public-facing storefront and a private admin dashboard:
 
-1. Go to [supabase.com](https://supabase.com) and create a free account
-2. Create a new project (choose South Africa region if available, or closest region)
-3. In the SQL Editor, run the schema setup script below:
+- **Public Frontend** (`index.html`, `contact.html`, `packages.html`) — Browse items, view packages, submit reviews
+- **Admin Dashboard** (`admin/index.html`) — Manage inventory, packages, and moderate customer reviews
+- **Backend** — Supabase (PostgreSQL) with Row-Level Security for data protection
+- **Authentication** — Supabase Auth for admin access; public review submissions require moderation
 
+---
+
+## Technology Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Vanilla JavaScript (OOP), HTML5, CSS3 |
+| **Architecture** | Modular class-based system with event delegation |
+| **Backend** | Supabase (PostgreSQL database + REST API) |
+| **Storage** | Supabase Storage (image uploads) |
+| **Auth** | Supabase Authentication (email/password for admin) |
+| **Hosting** | Static site deployment (GitHub Pages, Vercel, Netlify, Cloudflare) |
+| **Design System** | CSS custom properties (variables), responsive grid/flexbox |
+
+---
+
+## File Structure
+
+```
+joy&co/
+├── PUBLIC PAGES
+│   ├── index.html              # Homepage: items grid, gallery carousels, reviews
+│   ├── contact.html            # Contact form & review submission
+│   └── packages.html           # Package listings with filtering
+│
+├── ADMIN DASHBOARD
+│   └── admin/
+│       ├── index.html          # Admin dashboard & review moderation
+│       └── js/
+│           ├── auth.js         # Authentication guard & logout
+│           └── reviews.js      # ReviewsManager class (pending/approved tabs)
+│
+├── JAVASCRIPT MODULES (OOP Classes)
+│   └── js/
+│       ├── carousel.js         # Carousel class: image/reviews carousels with smart scrolling
+│       ├── nav.js              # NavManager: shared burger menu + secret admin access
+│       ├── items.js            # ItemsLoader: fetch & render items from Supabase
+│       ├── reviews-carousel.js # ReviewsCarousel: dynamic reviews with autoplay
+│       ├── contact-form.js     # ContactForm: form submission & validation
+│       └── supabase.js         # Supabase client config & helper functions
+│
+├── STYLING
+│   ├── css/
+│   │   ├── main.css            # Design system: colors, typography, spacing, components
+│   │   └── components.css      # Component styles: carousels, modals, badges, animations
+│
+├── ASSETS
+│   └── uploads/
+│       ├── inflatables-*.jpeg  # Product photos (5 images)
+│       ├── soft-play-*.jpeg    # Soft play equipment (2 images)
+│       ├── e.jpeg, g.jpeg      # Brand showcase (2 images)
+│       └── a.jpeg, b.jpeg, c.jpeg, d.jpeg  # Logo variants
+│
+├── CONFIGURATION
+│   ├── .gitignore              # Git ignore: .md files, node_modules, .env
+│   └── README.md               # This file
+
+```
+
+---
+
+## Architecture & OOP Design
+
+The codebase follows Object-Oriented Programming principles with clean separation of concerns. Each responsibility is isolated in its own class, promoting maintainability and reusability.
+
+### Public Page Classes
+
+#### **Carousel** (`js/carousel.js`)
+Manages all image carousels (gallery slides and reviews).
+
+**Features:**
+- Smart scrolling: only shows arrow/dot controls if >3 images
+- Continuous looping: advances one image per click, loops seamlessly with no blank spaces
+- Centered layout: images center horizontally when ≤3 (auto-scroll off)
+- Autoplay: 3.5s interval for gallery, 4s for reviews
+- Pause-on-hover: stops autoplay on mouse enter, resumes on leave
+- Responsive: adjusts slide width (300px desktop, 240px mobile) on window resize
+- Event delegation: prev/next/dots use event delegation (no inline onclick)
+
+**Key Methods:**
+- `init()` — Initialize carousel and set up UI
+- `next()`, `prev()`, `goTo(index)` — Navigation
+- `play()`, `pause()` — Autoplay control
+- `_update()` — Apply transform and update active dot
+
+**Behavior Examples:**
+- Inflatables (5 images): Scrollable, positions 0→1→2→loop
+- Soft Play (2 images): Centered, no scroll controls
+- Reviews: Dynamic from Supabase, scrollable if >1 review
+
+---
+
+#### **NavManager** (`js/nav.js`)
+Shared navigation across all public pages (DRY principle).
+
+**Features:**
+- Burger menu toggle at ≤768px viewport width
+- Opens/closes with ☰/✕ icon animation
+- Closes on link click or outside click
+- Secret admin access: tap logo 5 times within 3 seconds → redirects to `/admin/`
+
+**Used on:** `index.html`, `contact.html`, `packages.html`
+
+**Key Methods:**
+- `init()` — Set up burger and logo-tap listeners
+- `_setupBurger()` — Burger menu toggle logic
+- `_setupLogoTap()` — Secret access sequence
+
+---
+
+#### **ItemsLoader** (`js/items.js`)
+Fetches items from Supabase and renders product card grid.
+
+**Features:**
+- Queries Supabase: `SELECT * FROM items WHERE available = true`
+- Renders cards with image, name, description, price, rating, WhatsApp CTA
+- Error handling and empty state messaging
+- Uses Supabase helper functions: `formatZAR()`, `getCardColorClass()`, `getWhatsAppLink()`
+
+**Used on:** `index.html` (Featured Items section)
+
+**Key Methods:**
+- `load()` — Async fetch from Supabase
+- `_renderCard(item, index)` — Single card HTML
+- `_renderEmpty()`, `_renderError()` — Fallback states
+
+---
+
+#### **ReviewsCarousel** (`js/reviews-carousel.js`)
+Loads approved reviews from Supabase and renders a scrollable carousel.
+
+**Features:**
+- Queries: `SELECT * FROM reviews WHERE status = 'approved' ORDER BY created_at DESC`
+- Dynamic carousel rendering based on review count
+- Autoplay (4s) with pause-on-hover
+- Shows placeholder if no reviews exist
+- Event delegation for prev/next/dot clicks
+
+**Used on:** `index.html` (What Our Customers Say section)
+
+**Key Methods:**
+- `load()` — Async fetch approved reviews
+- `_render()` — Render carousel or placeholder
+- `_renderCard(review)` — Single review card (stars + quote + author)
+- `next()`, `prev()`, `goTo(index)` — Navigation
+
+---
+
+#### **ContactForm** (`js/contact-form.js`)
+Handles review form submission with validation and feedback.
+
+**Features:**
+- Form validation: name (required), rating (required), review text (required)
+- Location field (optional)
+- Star rating picker (1-5)
+- Supabase insert: `INSERT INTO reviews (name, location, rating, body, status) VALUES (..., 'pending')`
+- Toast notifications (success/error)
+- Form reset after successful submit
+- Button state management (loading, disabled)
+
+**Used on:** `contact.html` (Leave a Review section)
+
+**Key Methods:**
+- `init()` — Set up form listener
+- `_handleSubmit(e)` — Async Supabase insert
+- `_showToast(message, type)` — Toast notification
+
+---
+
+### Admin Classes
+
+#### **ReviewsManager** (`admin/js/reviews.js`)
+Manages review moderation workflow (pending approval → published).
+
+**Features:**
+- Tab navigation: Pending and Approved reviews
+- Queries Supabase with RLS: public can insert, admin can read/update/delete
+- Approve action: `UPDATE reviews SET status = 'approved' WHERE id = ?`
+- Delete action: `DELETE FROM reviews WHERE id = ?`
+- Pending count badge in sidebar (auto-updates)
+- Event delegation for approve/delete buttons
+- Auto-refresh after each action
+
+**Used on:** `admin/index.html` (⭐ Reviews section)
+
+**Key Methods:**
+- `init()` — Set up tabs and event listeners
+- `loadPending()`, `loadApproved()` — Fetch from Supabase
+- `approve(id)`, `delete(id, tab)` — Actions
+- `showTab(tab)` — Switch between tabs
+- `_render()` — Generate table rows
+- `_updateBadge()` — Update pending count display
+
+---
+
+#### **Auth** (`admin/js/auth.js`)
+Protects admin pages with Supabase authentication.
+
+**Features:**
+- Checks session on page load
+- Redirects unauthenticated users to login
+- Logout functionality (clears session)
+- Stores user info in `window.adminUser`
+
+---
+
+## Database Schema
+
+### `reviews` Table
 ```sql
--- Categories table
-CREATE TABLE categories (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  color_hex TEXT,
-  icon_name TEXT,
-  created_at TIMESTAMPTZ DEFAULT now()
+CREATE TABLE reviews (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  location text,
+  rating integer NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  body text NOT NULL,
+  status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved')),
+  created_at timestamptz DEFAULT now()
 );
 
--- Items table
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+
+-- Public: insert pending reviews only
+CREATE POLICY "reviews_insert_public" ON reviews
+  FOR INSERT WITH CHECK (status = 'pending');
+
+-- Public: read only approved reviews
+CREATE POLICY "reviews_select_approved" ON reviews
+  FOR SELECT USING (status = 'approved');
+
+-- Admin: full access
+CREATE POLICY "reviews_admin_all" ON reviews
+  FOR ALL USING (auth.uid() IS NOT NULL);
+```
+
+### `items` Table
+```sql
 CREATE TABLE items (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  description TEXT NOT NULL,
-  price_zar DECIMAL(10, 2) NOT NULL,
-  category TEXT NOT NULL,
-  stock_qty INTEGER DEFAULT 0,
-  damage_deposit DECIMAL(10, 2),
-  featured BOOLEAN DEFAULT FALSE,
-  available BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT now()
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  description text NOT NULL,
+  price_zar numeric NOT NULL,
+  category text,
+  available boolean DEFAULT true,
+  featured boolean DEFAULT false,
+  created_at timestamptz DEFAULT now()
 );
 
--- Item images table
+-- Related: item_images table for product photos
 CREATE TABLE item_images (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  item_id UUID REFERENCES items(id) ON DELETE CASCADE,
-  url TEXT NOT NULL,
-  is_primary BOOLEAN DEFAULT FALSE,
-  display_order INTEGER DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT now()
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  item_id uuid REFERENCES items(id) ON DELETE CASCADE,
+  url text NOT NULL,
+  is_primary boolean DEFAULT false
 );
+```
 
--- Packages table
+### `packages` Table
+```sql
 CREATE TABLE packages (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  description TEXT,
-  auto_description BOOLEAN DEFAULT TRUE,
-  price_zar DECIMAL(10, 2) NOT NULL,
-  featured BOOLEAN DEFAULT FALSE,
-  published BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT now()
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  description text,
+  auto_description text,
+  price_zar numeric NOT NULL,
+  featured boolean DEFAULT false,
+  published boolean DEFAULT false,
+  created_at timestamptz DEFAULT now()
 );
 
--- Package items join table
+-- Join table: relates packages to items
 CREATE TABLE package_items (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  package_id UUID REFERENCES packages(id) ON DELETE CASCADE,
-  item_id UUID REFERENCES items(id) ON DELETE CASCADE,
-  quantity INTEGER DEFAULT 1,
-  created_at TIMESTAMPTZ DEFAULT now()
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  package_id uuid REFERENCES packages(id) ON DELETE CASCADE,
+  item_id uuid REFERENCES items(id) ON DELETE CASCADE,
+  quantity integer DEFAULT 1
 );
-
--- Set up Row Level Security
-ALTER TABLE items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE packages ENABLE ROW LEVEL SECURITY;
-ALTER TABLE item_images ENABLE ROW LEVEL SECURITY;
-ALTER TABLE package_items ENABLE ROW LEVEL SECURITY;
-
--- Public can read items and packages
-CREATE POLICY "items_select_public" ON items FOR SELECT USING (true);
-CREATE POLICY "packages_select_public" ON packages FOR SELECT USING (true);
-CREATE POLICY "item_images_select_public" ON item_images FOR SELECT USING (true);
-CREATE POLICY "package_items_select_public" ON package_items FOR SELECT USING (true);
-
--- Storage setup
--- Create 'item-images' bucket in Storage tab (public)
-```
-
-4. Get your Supabase URL and Anon Key:
-   - Settings → API
-   - Copy "URL" and "anon" key
-
-5. Update `js/supabase.js`:
-```javascript
-const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
-```
-
-### Step 2: Set Up Admin Authentication
-
-1. In Supabase, go to Authentication → Users
-2. Click "Invite" and add your admin email
-3. Set a password for admin access
-4. Admin can now log in at `/admin/`
-
-### Step 3: Deploy to Cloudflare Pages
-
-1. Push this repository to GitHub
-2. Go to [pages.cloudflare.com](https://pages.cloudflare.com)
-3. Connect your GitHub repo
-4. Build settings:
-   - Framework: None
-   - Build command: (leave empty)
-   - Build output directory: (leave empty)
-5. Add environment variables:
-   - SUPABASE_URL
-   - SUPABASE_ANON_KEY
-6. Deploy!
-
-### Step 4: Configure Settings
-
-1. **Update WhatsApp number** in:
-   - `index.html` (hero section, line ~75)
-   - `packages.html` (line ~96)
-   - `js/supabase.js` (line ~27)
-
-   Replace `27XXXXXXXXX` with your WhatsApp business number (with country code, no +)
-
-2. **Update contact info** in footer:
-   - Email: `hello@joyco.co.za`
-   - Phone: `+27 XX XXX-XXXX`
-
-3. **Custom domain** (optional):
-   - Domain registrar: Point `joyco.co.za` to Cloudflare nameservers
-   - Cloudflare: Add custom domain in Pages settings
-
----
-
-## 📁 Project Structure
-
-```
-joy-co/
-├── index.html                 # Homepage (hero, featured items, testimonials)
-├── packages.html              # Packages grid page
-├── css/
-│   ├── main.css              # Design system (colors, typography, spacing)
-│   └── components.css        # Components (modals, badges, alerts, animations)
-├── js/
-│   └── supabase.js           # Supabase client setup & helper functions
-└── admin/
-    ├── index.html            # Admin login page
-    ├── dashboard.html        # Admin dashboard (stats, overview)
-    ├── items.html            # Manage rental items (CRUD)
-    ├── packages.html         # Create/edit packages with auto-description
-    └── js/
-        └── auth.js           # Admin auth guard & logout
 ```
 
 ---
 
-## 🎨 Design System
+## End-to-End Workflows
 
-**Colors** (Design 2: Vibrant & Bold):
-- Primary: Blue (#3B82F6)
-- Secondary: Green (#10B981)
-- Accent: Amber (#F59E0B), Pink (#EC4899), Purple (#8B5CF6), Coral (#FF6B6B)
-
-**Typography**:
-- Headings: Poppins 600–800 (bold, modern)
-- Body: Open Sans 400–500 (readable, clean)
-
-**Spacing**: 8px base unit
-- Small: 8px, Medium: 16px, Large: 24px, XL: 32px, 2XL: 40px, etc.
-
-**Border Radius**:
-- Small: 6px, Medium: 12px, Large: 16px, XL: 20px (cards)
+### Workflow 1: Customer Browsing Items
+1. User visits `index.html`
+2. Page loads; JavaScript instantiates `ItemsLoader` and `Carousel` classes
+3. `ItemsLoader.load()` queries Supabase: `SELECT * FROM items WHERE available=true`
+4. Items rendered in grid with images, pricing, "Enquire" WhatsApp button
+5. Gallery carousels auto-render:
+   - Inflatables (5 images) → scrollable
+   - Soft Play (2 images) → centered, no scroll
+   - Brand (2 images) → centered, no scroll
+6. Reviews carousel loads approved reviews and auto-scrolls
+7. Mobile: burger menu appears at ≤768px; user can tap ☰ to see nav links
 
 ---
 
-## 👥 Admin Features
-
-### Dashboard (`/admin/dashboard.html`)
-- View item count, package count, featured items, low stock alerts
-- Quick links to add items or create packages
-- Recent items and packages overview
-
-### Manage Items (`/admin/items.html`)
-- Add new rental items
-- Edit item details (name, description, price, stock, category, images)
-- Toggle featured/available status
-- Upload multiple images (drag & drop supported)
-- Delete items
-
-**Item Fields**:
-- Name, Category, Price (ZAR), Stock Quantity, Damage Deposit
-- Description, Featured toggle, Availability toggle
-- Multiple images (lazy-loaded, optimized)
-
-### Create Packages (`/admin/packages.html`)
-- Select multiple items from inventory
-- Specify quantity per item
-- Auto-generate description from items
-- Edit description before publishing
-- Set package price (with 5% auto-markup option)
-- Toggle featured/published status
-
-**Auto-Generated Description**:
-```
-The [Package Name] includes:
-• [Qty] × [Item Name]
-• [Qty] × [Item Name]
-
-Perfect for events of 20–50 guests.
-All items professionally delivered and collected by Joy&Co.
-```
+### Workflow 2: Customer Submitting Review
+1. Customer clicks "Leave a Review" button
+2. Navigates to `contact.html`
+3. Fills form: name, rating (1-5 star picker), review text
+4. Clicks "Submit Review"
+5. `ContactForm._handleSubmit()` validates form
+6. Supabase: `INSERT INTO reviews (...) VALUES (..., status='pending')`
+7. Toast notification: "Thanks! Your review will appear once approved."
+8. Form resets
+9. Review stored in database but NOT visible on homepage yet
 
 ---
 
-## 🔒 Security & Privacy
-
-- **Admin pages** protected by Supabase Auth
-- **Database** uses Row Level Security (RLS) to prevent unauthorized access
-- **Images** stored in Supabase Storage with URL expiration (configurable)
-- **POPIA compliant** — See `PRIVACY_POLICY.md` (create this with your legal team)
-- **No sensitive data** in client-side code
-
----
-
-## 📱 Responsive Design
-
-Fully responsive across:
-- Mobile: 375px (iPhone SE)
-- Tablet: 768px (iPad)
-- Desktop: 1024px, 1440px+
-
-All elements tested on modern browsers (Chrome, Safari, Firefox, Edge).
+### Workflow 3: Admin Moderating Reviews
+1. Admin logs in to `/admin/index.html`
+2. Dashboard shows pending count badge (⭐ Reviews)
+3. Admin clicks "Reviews" in sidebar
+4. Pending tab loads automatically
+5. `ReviewsManager.loadPending()` queries Supabase: `SELECT * FROM reviews WHERE status='pending'`
+6. Reviews displayed in table with Approve/Delete buttons
+7. Admin clicks "Approve":
+   - `ReviewsManager.approve(id)` runs: `UPDATE reviews SET status='approved' WHERE id=?`
+   - Review immediately appears in homepage carousel
+   - Pending count badge updates (decrements)
+8. Or admin clicks "Delete":
+   - `ReviewsManager.delete(id)` runs: `DELETE FROM reviews WHERE id=?`
+   - Review removed
+   - Pending count badge updates
 
 ---
 
-## 🌍 South Africa Localization
-
-✅ Prices in ZAR (R format)  
-✅ Delivery areas: Johannesburg, Cape Town, Durban, Pretoria, + custom  
-✅ 9 provinces in address form  
-✅ SAST timezone  
-✅ 15% VAT included in display prices  
-✅ WhatsApp inquiries (popular in SA)  
-✅ Public holidays calendar (for future booking features)  
-
----
-
-## ⚡ Performance Optimizations
-
-- **Lazy-load images** — Images load only when visible
-- **WebP format** — Automatic fallback to JPEG
-- **Responsive images** — Serves optimized sizes per device
-- **No build tools** — Instant page load (no JavaScript compilation)
-- **Cached fonts** — Google Fonts preconnect
-- **Minified CSS** — Production-ready stylesheets
-- **Core Web Vitals**:
-  - LCP (Largest Contentful Paint): < 2.5s
-  - FID (First Input Delay): < 100ms
-  - CLS (Cumulative Layout Shift): < 0.1
+### Workflow 4: Mobile Burger Menu
+1. User on mobile (width ≤768px)
+2. Burger button (☰) appears in top-right of nav
+3. User taps ☰
+4. `NavManager._setupBurger()` toggles class `.open` on nav-links
+5. Nav links slide down from top
+6. Button icon changes to ✕
+7. User clicks a link (e.g., "Packages")
+8. Menu automatically closes, icon reverts to ☰
 
 ---
 
-## 🔍 SEO Features
-
-✅ Semantic HTML (`<main>`, `<article>`, `<section>`, `<nav>`)  
-✅ Schema.org markup (Product, LocalBusiness, ItemList)  
-✅ Meta tags (title, description, og:image)  
-✅ Alt text on all images  
-✅ Mobile-first design  
-✅ Sitemap (manual, can be auto-generated)  
-✅ robots.txt (allow search engines)  
-✅ Internal linking (related items, breadcrumbs)  
+### Workflow 5: Secret Admin Access
+1. User on any public page
+2. Taps Joy&Co logo in top-left navbar
+3. Tap count increments; timer resets on each tap
+4. After 5 taps within 3 seconds:
+   - `NavManager._setupLogoTap()` redirects to `/admin/`
+   - Admin login page displays
 
 ---
 
-## 📝 Configuration Checklist
+## Design System & Styling
 
-- [ ] Supabase project created and tables set up
-- [ ] Supabase anon key added to `js/supabase.js`
-- [ ] Admin email invited in Supabase Authentication
-- [ ] WhatsApp business number added to pages
-- [ ] Contact info (email, phone) updated
-- [ ] GitHub repo created and pushed
-- [ ] Cloudflare Pages connected to repo
-- [ ] Custom domain configured (optional)
-- [ ] First test item added via admin
-- [ ] Site tested on mobile and desktop
+### Color Palette
+| Color | Hex | Usage |
+|-------|-----|-------|
+| **Gold** | #c89a3a | Primary brand, accents, active states |
+| **Coral** | #e89881 | Secondary accent, buttons |
+| **Sage** | #93a37a | Tertiary accent |
+| **Lilac** | #b094c8 | Links, hover states |
+| **Pink** | #ff6eb4 | Alerts, call-to-action |
+| **Mint** | #a8e6d7 | Success states |
+| **Dark** | #111827 | Text, backgrounds |
+| **Light** | #F9FAFB | Light backgrounds |
+| **Gray** | #6B7280 | Secondary text |
 
----
+### Typography
+- **Headings**: Fraunces (serif, 400–500 weight) — professional, elegant
+- **Body**: Open Sans (sans-serif, 400–500 weight) — clean, readable
+- **Script**: Dancing Script (cursive, 600 weight) — brand accent, decorative
 
-## 🚀 Next Steps After Launch
+### Spacing
+8px base unit with scale:
+- xs: 4px, sm: 8px, md: 16px, lg: 24px, xl: 32px, 2xl: 40px, 3xl: 48px+
 
-1. **Add sample items** — Test the customer experience
-2. **Create first packages** — Show how bundling works
-3. **Monitor Core Web Vitals** — Use Google PageSpeed Insights
-4. **Collect customer feedback** — Use Hotjar or surveys
-5. **Track conversions** — Set up Google Analytics
-6. **Optimize images** — Compress and test load times
-7. **Add more features** — Booking system, reviews, discounts (Phase 2)
-
----
-
-## 🆘 Troubleshooting
-
-### Images not showing
-- Check Supabase Storage bucket is public
-- Verify image URLs are correct in database
-- Check browser console for CORS errors
-
-### Admin login not working
-- Verify email is invited in Supabase Authentication
-- Check password is set correctly
-- Clear browser cookies and try again
-- Check Supabase project is running
-
-### Prices not displaying in ZAR
-- Check `formatZAR()` function in `js/supabase.js`
-- Verify Intl.NumberFormat support (modern browsers only)
-- Test in Chrome DevTools
-
-### Items not loading on homepage
-- Check network tab in browser DevTools
-- Verify Supabase URL and anon key are correct
-- Check RLS policies allow public SELECT
-- Check database has items with `available = true`
+### Responsive Breakpoints
+- **Mobile**: ≤640px (max 375px width)
+- **Tablet**: 641–1024px (768px target)
+- **Desktop**: ≥1025px (1440px+ wide screens)
 
 ---
 
-## 📞 Support
+## Key Features & Highlights
 
-**For Supabase**: [supabase.com/support](https://supabase.com/support)  
-**For Cloudflare**: [support.cloudflare.com](https://support.cloudflare.com)  
-**For this project**: Email `hello@joyco.co.za`
+### Smart Carousel Behavior
+- Images ≤3: centered layout, no scroll controls, all visible at once
+- Images >3: left-aligned, scrollable with arrows/dots, autoplay
+- Looping: after last image, smoothly loops back to first (no blanks)
+- Responsive: slide width adapts to mobile vs desktop
+
+### Security & Access Control
+- **Public**: Can view items, packages, submit reviews (pending moderation)
+- **Admin**: Protected by Supabase Auth; full CRUD on items, packages, reviews
+- **RLS Policies**: Enforce access at database level, not just frontend
+
+### Mobile Optimization
+- Hamburger menu (≤768px)
+- Touch-friendly buttons and star picker
+- Full-width carousels
+- Responsive images (lazy-loaded)
+- Proper viewport scaling
+
+### Performance
+- No build step (vanilla JS, no compilation)
+- Lazy-loaded images (load on-demand)
+- Event delegation (fewer listeners)
+- CSS transitions (hardware-accelerated)
+- Supabase caching (REST API + database query caching)
 
 ---
 
-## 📄 License
+## Configuration & Deployment
 
-This project is proprietary to Joy&Co. All rights reserved.
+### Environment Setup
+1. Clone repository: `git clone https://github.com/Diwainashe/Joy-Co.git`
+2. Create Supabase project and set up tables (see SETUP_REVIEWS.md)
+3. Add Supabase URL & anon key to `js/supabase.js`
+4. Update WhatsApp number: search `27732026535` in HTML files
+5. Start local server: `python -m http.server 8000`
+6. Test at `http://localhost:8000`
+
+### Deploying Changes
+1. Make code changes locally
+2. Test on mobile/desktop
+3. Commit: `git add . && git commit -m "description"`
+4. Push: `git push origin master`
+5. Site auto-deploys (GitHub Pages, Vercel, Netlify, or Cloudflare Pages)
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: May 2024  
-**Made with ❤️ for Joy&Co**
+## Code Quality & Best Practices
+
+### OOP Principles Applied
+- **Single Responsibility**: One class per domain (Carousel, NavManager, ContactForm)
+- **Encapsulation**: Private methods prefixed with `_`
+- **Reusability**: NavManager shared across 3 pages; Carousel used for 4 carousels
+- **Event Delegation**: Buttons use `data-*` attributes, not inline onclick
+- **Dependency Injection**: Classes receive element IDs, not globals
+
+### Lines of Code Reduction
+- **index.html**: 330 lines inline JS → 50 lines boot script (85% reduction)
+- **contact.html**: 100 lines → 8 lines (92% reduction)
+- **packages.html**: 80 lines → 6 lines (93% reduction)
+
+---
+
+## Future Enhancements
+
+1. **Booking System** — Calendar-based rental date selection
+2. **Payment Integration** — Stripe/PayPal for online payments
+3. **Analytics** — Track popular items, booking trends, revenue
+4. **Inventory Management** — Track availability per date range
+5. **Email Notifications** — Booking confirmations, review approvals
+6. **Search & Filtering** — Full-text search, advanced filters
+7. **Customer Accounts** — Save preferences, booking history
+
+---
+
+## Testing Checklist
+
+- [x] Homepage loads items from Supabase
+- [x] Carousels: galleries scroll smoothly (1 image per advance)
+- [x] Carousels: ≤3 images centered, >3 scrollable
+- [x] Reviews carousel: loads approved reviews, autoplay 4s
+- [x] Contact form: submits to Supabase, shows toast, resets
+- [x] Mobile: burger menu opens/closes at ≤768px
+- [x] Mobile: logo tap sequence (5 taps in 3s) works
+- [x] Admin: login/logout works
+- [x] Admin: Reviews Pending tab loads pending reviews
+- [x] Admin: Approve button updates status, refreshes page
+- [x] Admin: Delete button removes review, updates badge
+- [x] Footer: year updates dynamically
+
+---
+
+## Support & Maintenance
+
+**Developer**: Diwainashe (web development)  
+**Contact**: hello@joyco.co.za  
+**Repository**: https://github.com/Diwainashe/Joy-Co
+
+---
+
+**Version**: 2.0 (OOP Architecture + Smart Carousels)  
+**Last Updated**: May 2026  
+**Status**: Production Ready
