@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Dashboard - Joy&Co</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+
+  <style>
+    body {
+      background: var(--color-neutral-50);
+    }
+
+    main {
+      padding: var(--space-lg);
+    }
+
+    .dashboard-header {
+      background: linear-gradient(135deg, var(--jc-pink) 0%, var(--jc-purple) 50%, var(--jc-mint) 100%);
+      color: var(--text-primary);
+      padding: var(--space-2xl) var(--space-lg);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .dashboard-header h1 {
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+
+    .dashboard-header p {
+      color: var(--text-primary);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .stat-card {
+      background: white;
+      padding: var(--space-lg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--jc-pink);
+      margin-bottom: var(--space-sm);
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+    }
+
+    .quick-actions .btn {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .section-title {
+      font-size: var(--fs-h3);
+      margin: var(--space-2xl) 0 var(--space-lg);
+      color: var(--text-primary);
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--color-neutral-200);
+      gap: var(--space-lg);
+    }
+
+    .item-row:last-child {
+      border-bottom: none;
+    }
+
+    .item-info h4 {
+      margin: 0 0 4px;
+      font-size: var(--fs-body);
+    }
+
+    .item-price {
+      color: var(--color-blue);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl) var(--space-lg);
+      color: var(--text-secondary);
+    }
+
+    .nav-bar {
+      background: white;
+      border-bottom: 1px solid var(--color-neutral-200);
+      padding: 0;
+      margin-bottom: var(--space-lg);
+    }
+
+    .nav-bar .nav-container {
+      padding: var(--space-md) var(--space-lg);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav-bar" role="navigation" aria-label="Admin navigation">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Joy&Co 🎉</a>
+      <ul class="nav-links">
+        <li><a href="/admin/dashboard.html">Dashboard</a></li>
+        <li><a href="/admin/items.html">Items</a></li>
+        <li><a href="/admin/packages.html">Packages</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <h1>Welcome to Admin Dashboard</h1>
+      <p>Manage your rental inventory and packages</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-items">-</div>
+        <div class="stat-label">Total Items</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-packages">-</div>
+        <div class="stat-label">Packages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-featured">-</div>
+        <div class="stat-label">Featured Items</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-low-stock">-</div>
+        <div class="stat-label">Low Stock</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <a href="/admin/items.html" class="btn btn-primary">
+        ➕ Add New Item
+      </a>
+      <a href="/admin/packages.html" class="btn btn-success">
+        🎁 Create Package
+      </a>
+      <a href="/" class="btn btn-secondary">
+        👁️ View Site
+      </a>
+    </div>
+
+    <!-- Recent Items -->
+    <h2 class="section-title">Recent Items</h2>
+    <div class="card" style="background: white;">
+      <div id="recent-items">
+        <div class="empty-state">Loading recent items...</div>
+      </div>
+    </div>
+
+    <!-- Recent Packages -->
+    <h2 class="section-title">Recent Packages</h2>
+    <div class="card" style="background: white;">
+      <div id="recent-packages">
+        <div class="empty-state">Loading recent packages...</div>
+      </div>
+    </div>
+
+    <!-- Low Stock Alert -->
+    <h2 class="section-title">Low Stock Items</h2>
+    <div class="card" style="background: white;">
+      <div id="low-stock-items">
+        <div class="empty-state">No items with low stock.</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Supabase Configuration -->
+  <script src="/js/supabase.js"></script>
+
+  <!-- Admin Auth Guard -->
+  <script src="/admin/js/auth.js"></script>
+
+  <!-- Dashboard Script -->
+  <script>
+    const { client: supabase, formatZAR } = window.joycoSupabase;
+
+    async function loadDashboardData() {
+      try {
+        // Fetch items
+        const { data: items, error: itemsError } = await supabase
+          .from('items')
+          .select('id, name, price_zar, stock_qty, featured');
+
+        if (itemsError) throw itemsError;
+
+        // Fetch packages
+        const { data: packages, error: packagesError } = await supabase
+          .from('packages')
+          .select('id, name, price_zar, published')
+          .order('created_at', { ascending: false });
+
+        if (packagesError) throw packagesError;
+
+        // Update stats
+        document.getElementById('stat-items').textContent = items?.length || 0;
+        document.getElementById('stat-packages').textContent = packages?.length || 0;
+        document.getElementById('stat-featured').textContent = items?.filter(i => i.featured).length || 0;
+        const lowStock = items?.filter(i => i.stock_qty < 5).length || 0;
+        document.getElementById('stat-low-stock').textContent = lowStock;
+
+        // Render recent items
+        const recentItemsHtml = items?.slice(0, 5).length > 0
+          ? items.slice(0, 5).map(item => `
+              <div class="item-row">
+                <div class="item-info">
+                  <h4>${item.name}</h4>
+                  <p style="color: var(--text-secondary); margin: 0; font-size: 14px;">
+                    Stock: ${item.stock_qty} | Featured: ${item.featured ? '✅' : '❌'}
+                  </p>
+                </div>
+                <div class="item-price">${formatZAR(item.price_zar)}</div>
+              </div>
+            `).join('')
+          : '<div class="empty-state">No items yet. <a href="/admin/items.html">Add one now →</a></div>';
+
+        document.getElementById('recent-items').innerHTML = recentItemsHtml;
+
+        // Render recent packages
+        const recentPackagesHtml = packages?.slice(0, 5).length > 0
+          ? packages.slice(0, 5).map(pkg => `
+              <div class="item-row">
+                <div class="item-info">
+                  <h4>${pkg.name}</h4>
+                  <p style="color: var(--text-secondary); margin: 0; font-size: 14px;">
+                    Status: ${pkg.published ? '🟢 Published' : '🔴 Draft'}
+                  </p>
+                </div>
+                <div class="item-price">${formatZAR(pkg.price_zar)}</div>
+              </div>
+            `).join('')
+          : '<div class="empty-state">No packages yet. <a href="/admin/packages.html">Create one now →</a></div>';
+
+        document.getElementById('recent-packages').innerHTML = recentPackagesHtml;
+
+        // Render low stock items
+        const lowStockItems = items?.filter(i => i.stock_qty < 5);
+        const lowStockHtml = lowStockItems?.length > 0
+          ? lowStockItems.map(item => `
+              <div class="item-row">
+                <div class="item-info">
+                  <h4>${item.name}</h4>
+                  <p style="color: var(--text-secondary); margin: 0; font-size: 14px;">
+                    Only ${item.stock_qty} in stock
+                  </p>
+                </div>
+                <a href="/admin/items.html" class="btn btn-sm btn-secondary">Edit</a>
+              </div>
+            `).join('')
+          : '<div class="empty-state">All items well-stocked!</div>';
+
+        document.getElementById('low-stock-items').innerHTML = lowStockHtml;
+
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+        document.getElementById('recent-items').innerHTML = '<div class="empty-state">Error loading data</div>';
+      }
+    }
+
+    // Load dashboard data when page loads
+    document.addEventListener('DOMContentLoaded', loadDashboardData);
+  </script>
+</body>
+</html>

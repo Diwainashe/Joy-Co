@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Manage Items - Joy&Co Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+
+  <style>
+    body {
+      background: var(--color-neutral-50);
+    }
+
+    main {
+      padding: var(--space-lg);
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2xl);
+      gap: var(--space-lg);
+      flex-wrap: wrap;
+    }
+
+    .page-header h1 {
+      margin: 0;
+    }
+
+    .items-table-container {
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .items-table th {
+      background: var(--color-neutral-100);
+      padding: var(--space-md);
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--color-neutral-200);
+    }
+
+    .items-table td {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+
+    .items-table tr:hover {
+      background: var(--color-neutral-50);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .action-buttons .btn {
+      padding: 0 var(--space-md);
+      height: 36px;
+      font-size: var(--fs-small);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl) var(--space-lg);
+      color: var(--text-secondary);
+    }
+
+    .nav-bar {
+      background: white;
+      border-bottom: 1px solid var(--color-neutral-200);
+      padding: 0;
+      margin-bottom: var(--space-lg);
+    }
+
+    .nav-bar .nav-container {
+      padding: var(--space-md) var(--space-lg);
+    }
+
+    .modal {
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: var(--space-md);
+      margin-top: var(--space-2xl);
+      justify-content: flex-end;
+    }
+
+    .image-preview-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .image-preview {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-neutral-200);
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-small);
+      font-weight: 600;
+    }
+
+    .status-active {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--color-green);
+    }
+
+    .status-inactive {
+      background: rgba(107, 114, 128, 0.1);
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav-bar" role="navigation" aria-label="Admin navigation">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Joy&Co 🎉</a>
+      <ul class="nav-links">
+        <li><a href="/admin/dashboard.html">Dashboard</a></li>
+        <li><a href="/admin/items.html">Items</a></li>
+        <li><a href="/admin/packages.html">Packages</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Manage Items</h1>
+      <button class="btn btn-primary" id="add-item-btn">➕ Add New Item</button>
+    </div>
+
+    <!-- Items Table -->
+    <div class="items-table-container">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price (ZAR)</th>
+            <th>Stock</th>
+            <th>Featured</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="items-tbody">
+          <tr>
+            <td colspan="7" class="empty-state">Loading items...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Add/Edit Item Modal -->
+  <div id="item-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+
+      <h2 id="modal-title">Add New Item</h2>
+
+      <form id="item-form">
+        <div class="form-group">
+          <label for="item-name">Item Name *</label>
+          <input type="text" id="item-name" name="name" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="item-category">Category *</label>
+            <select id="item-category" name="category" required>
+              <option value="">Select Category</option>
+              <option value="furniture">Furniture</option>
+              <option value="decorations">Decorations</option>
+              <option value="lighting">Lighting</option>
+              <option value="tableware">Tableware</option>
+              <option value="audio-visual">Audio/Visual</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="item-price">Price per Day (ZAR) *</label>
+            <input type="number" id="item-price" name="price_zar" min="0" step="0.01" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="item-stock">Stock Quantity *</label>
+            <input type="number" id="item-stock" name="stock_qty" min="0" required>
+          </div>
+
+          <div class="form-group">
+            <label for="item-deposit">Damage Deposit (ZAR)</label>
+            <input type="number" id="item-deposit" name="damage_deposit" min="0" step="0.01">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="item-description">Description *</label>
+          <textarea id="item-description" name="description" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="item-featured" name="featured"> Featured Item (highlight on homepage)
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="item-available" name="available" checked> Available for Rent
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="item-images">Images</label>
+          <div class="file-upload" id="file-upload">
+            <input type="file" id="item-images" name="images" multiple accept="image/*">
+            <p>Click to upload or drag and drop</p>
+          </div>
+          <div class="image-preview-list" id="image-preview-list"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="item-submit">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Supabase Configuration -->
+  <script src="/js/supabase.js"></script>
+
+  <!-- Admin Auth Guard -->
+  <script src="/admin/js/auth.js"></script>
+
+  <!-- Items Management Script -->
+  <script>
+    const { client: supabase, formatZAR } = window.joycoSupabase;
+    const modal = document.getElementById('item-modal');
+    const itemForm = document.getElementById('item-form');
+    const addItemBtn = document.getElementById('add-item-btn');
+    const modalClose = document.getElementById('modal-close');
+    const modalCancel = document.getElementById('modal-cancel');
+    const fileUpload = document.getElementById('file-upload');
+    const itemImagesInput = document.getElementById('item-images');
+    const imagePreviewList = document.getElementById('image-preview-list');
+
+    let currentItemId = null;
+    let uploadedImages = [];
+
+    // Load items from Supabase
+    async function loadItems() {
+      const tbody = document.getElementById('items-tbody');
+
+      try {
+        const { data: items, error } = await supabase
+          .from('items')
+          .select('id, name, category, price_zar, stock_qty, featured, available')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!items || items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No items yet. Create one to get started!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = items.map(item => `
+          <tr>
+            <td><strong>${item.name}</strong></td>
+            <td>${item.category}</td>
+            <td>${formatZAR(item.price_zar)}</td>
+            <td>${item.stock_qty}</td>
+            <td>${item.featured ? '⭐' : '—'}</td>
+            <td>
+              <span class="status-badge ${item.available ? 'status-active' : 'status-inactive'}">
+                ${item.available ? 'Active' : 'Inactive'}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="editItem('${item.id}')">Edit</button>
+                <button class="btn btn-outline" onclick="deleteItem('${item.id}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+
+      } catch (error) {
+        console.error('Error loading items:', error);
+        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Error loading items</td></tr>';
+      }
+    }
+
+    // Open add item modal
+    addItemBtn.addEventListener('click', () => {
+      currentItemId = null;
+      itemForm.reset();
+      uploadedImages = [];
+      imagePreviewList.innerHTML = '';
+      document.getElementById('modal-title').textContent = 'Add New Item';
+      document.getElementById('item-submit').textContent = 'Create Item';
+      modal.classList.add('active');
+    });
+
+    // Close modal
+    function closeModal() {
+      modal.classList.remove('active');
+      itemForm.reset();
+      uploadedImages = [];
+      imagePreviewList.innerHTML = '';
+      currentItemId = null;
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalCancel.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // File upload handler
+    fileUpload.addEventListener('click', () => itemImagesInput.click());
+    fileUpload.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileUpload.classList.add('active');
+    });
+    fileUpload.addEventListener('dragleave', () => {
+      fileUpload.classList.remove('active');
+    });
+    fileUpload.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileUpload.classList.remove('active');
+      itemImagesInput.files = e.dataTransfer.files;
+      previewImages();
+    });
+
+    itemImagesInput.addEventListener('change', previewImages);
+
+    function previewImages() {
+      imagePreviewList.innerHTML = '';
+      uploadedImages = Array.from(itemImagesInput.files);
+
+      uploadedImages.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const preview = document.createElement('div');
+          preview.className = 'image-preview';
+          preview.innerHTML = `
+            <img src="${e.target.result}" alt="Preview ${index + 1}">
+            <button type="button" class="image-remove" onclick="removeImage(${index})" title="Remove image">×</button>
+          `;
+          imagePreviewList.appendChild(preview);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function removeImage(index) {
+      const newFiles = new DataTransfer();
+      uploadedImages.forEach((file, i) => {
+        if (i !== index) newFiles.items.add(file);
+      });
+      itemImagesInput.files = newFiles.files;
+      previewImages();
+    }
+
+    // Save item
+    itemForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const itemData = {
+        name: document.getElementById('item-name').value,
+        category: document.getElementById('item-category').value,
+        price_zar: parseFloat(document.getElementById('item-price').value),
+        stock_qty: parseInt(document.getElementById('item-stock').value),
+        damage_deposit: parseFloat(document.getElementById('item-deposit').value) || null,
+        description: document.getElementById('item-description').value,
+        featured: document.getElementById('item-featured').checked,
+        available: document.getElementById('item-available').checked,
+      };
+
+      try {
+        document.getElementById('item-submit').disabled = true;
+        document.getElementById('item-submit').textContent = 'Saving...';
+
+        if (currentItemId) {
+          // Update existing item
+          const { error } = await supabase
+            .from('items')
+            .update(itemData)
+            .eq('id', currentItemId);
+
+          if (error) throw error;
+        } else {
+          // Create new item
+          const { data, error } = await supabase
+            .from('items')
+            .insert([itemData])
+            .select();
+
+          if (error) throw error;
+          currentItemId = data[0].id;
+        }
+
+        // Upload images if present
+        if (uploadedImages.length > 0) {
+          for (let i = 0; i < uploadedImages.length; i++) {
+            const file = uploadedImages[i];
+            const filePath = `${currentItemId}/${file.name}`;
+
+            const { error: uploadError } = await supabase.storage
+              .from('item-images')
+              .upload(filePath, file);
+
+            if (uploadError) console.warn('Image upload error:', uploadError);
+          }
+        }
+
+        closeModal();
+        loadItems();
+
+      } catch (error) {
+        console.error('Save error:', error);
+        alert('Error saving item: ' + error.message);
+      } finally {
+        document.getElementById('item-submit').disabled = false;
+        document.getElementById('item-submit').textContent = 'Save Item';
+      }
+    });
+
+    // Edit item (stub for now, would load item data and populate form)
+    async function editItem(id) {
+      console.log('Edit item:', id);
+      // TODO: Load item data and populate form
+      // For now, show modal
+      modal.classList.add('active');
+    }
+
+    // Delete item
+    async function deleteItem(id) {
+      if (!confirm('Are you sure you want to delete this item?')) return;
+
+      try {
+        const { error } = await supabase
+          .from('items')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        loadItems();
+
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert('Error deleting item: ' + error.message);
+      }
+    }
+
+    // Load items on page load
+    document.addEventListener('DOMContentLoaded', loadItems);
+  </script>
+</body>
+</html>

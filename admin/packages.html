@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Manage Packages - Joy&Co Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+
+  <style>
+    body {
+      background: var(--color-neutral-50);
+    }
+
+    main {
+      padding: var(--space-lg);
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2xl);
+      gap: var(--space-lg);
+      flex-wrap: wrap;
+    }
+
+    .page-header h1 {
+      margin: 0;
+    }
+
+    .packages-table-container {
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .packages-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .packages-table th {
+      background: var(--color-neutral-100);
+      padding: var(--space-md);
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--color-neutral-200);
+    }
+
+    .packages-table td {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+
+    .packages-table tr:hover {
+      background: var(--color-neutral-50);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .action-buttons .btn {
+      padding: 0 var(--space-md);
+      height: 36px;
+      font-size: var(--fs-small);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl) var(--space-lg);
+      color: var(--text-secondary);
+    }
+
+    .nav-bar {
+      background: white;
+      border-bottom: 1px solid var(--color-neutral-200);
+      padding: 0;
+      margin-bottom: var(--space-lg);
+    }
+
+    .nav-bar .nav-container {
+      padding: var(--space-md) var(--space-lg);
+    }
+
+    .modal {
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: var(--space-md);
+      margin-top: var(--space-2xl);
+      justify-content: flex-end;
+    }
+
+    .selected-items-list {
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      background: var(--color-neutral-50);
+    }
+
+    .selected-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: var(--space-md);
+      align-items: center;
+      padding: var(--space-md);
+      background: white;
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-sm);
+      border: 1px solid var(--color-neutral-200);
+    }
+
+    .selected-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .selected-item input {
+      width: 80px;
+    }
+
+    .price-summary {
+      background: white;
+      padding: var(--space-lg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-neutral-200);
+      margin-top: var(--space-lg);
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+
+    .price-row.total {
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: var(--space-md);
+      padding-top: var(--space-md);
+      border-top: 2px solid var(--color-blue);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-small);
+      font-weight: 600;
+    }
+
+    .status-published {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--color-green);
+    }
+
+    .status-draft {
+      background: rgba(107, 114, 128, 0.1);
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav-bar" role="navigation" aria-label="Admin navigation">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Joy&Co 🎉</a>
+      <ul class="nav-links">
+        <li><a href="/admin/dashboard.html">Dashboard</a></li>
+        <li><a href="/admin/items.html">Items</a></li>
+        <li><a href="/admin/packages.html">Packages</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Manage Packages</h1>
+      <button class="btn btn-primary" id="add-package-btn">🎁 Create Package</button>
+    </div>
+
+    <!-- Packages Table -->
+    <div class="packages-table-container">
+      <table class="packages-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Items</th>
+            <th>Price (ZAR)</th>
+            <th>Featured</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="packages-tbody">
+          <tr>
+            <td colspan="6" class="empty-state">Loading packages...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Create/Edit Package Modal -->
+  <div id="package-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+
+      <h2 id="modal-title">Create Package</h2>
+
+      <form id="package-form">
+        <div class="form-group">
+          <label for="package-name">Package Name *</label>
+          <input type="text" id="package-name" name="name" required placeholder="e.g., Elegant Wedding Package">
+        </div>
+
+        <div class="form-group">
+          <label for="package-occasion">Occasion/Category</label>
+          <select id="package-occasion" name="occasion">
+            <option value="">Select Occasion</option>
+            <option value="wedding">Wedding</option>
+            <option value="birthday">Birthday</option>
+            <option value="corporate">Corporate Event</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="celebration">Celebration</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="available-items">Select Items to Include *</label>
+          <select id="available-items" multiple size="8" required>
+            <!-- Populated by JavaScript -->
+          </select>
+          <p style="font-size: var(--fs-small); color: var(--text-secondary); margin-top: var(--space-sm);">
+            Hold Ctrl/Cmd to select multiple items
+          </p>
+        </div>
+
+        <div id="selected-items-list" class="selected-items-list">
+          <p style="color: var(--text-secondary); margin: 0;">No items selected yet</p>
+        </div>
+
+        <div class="price-summary">
+          <div class="price-row">
+            <span>Items Subtotal:</span>
+            <span id="subtotal-price">R0.00</span>
+          </div>
+          <div class="price-row">
+            <span>Package Price (ZAR) *</span>
+            <input type="number" id="package-price" name="price_zar" min="0" step="0.01" required style="width: 150px;" placeholder="Auto-calculated">
+          </div>
+          <div class="price-row">
+            <button type="button" id="auto-calc-btn" class="btn btn-sm btn-secondary">Auto-Calculate</button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: var(--space-lg);">
+          <label for="package-description">Description (Auto-generated, can edit)</label>
+          <textarea id="package-description" name="description" placeholder="Auto-generated description will appear here..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="package-featured" name="featured"> Featured Package
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="package-published" name="published"> Publish (visible to customers)
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="package-submit">Save Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Supabase Configuration -->
+  <script src="/js/supabase.js"></script>
+
+  <!-- Admin Auth Guard -->
+  <script src="/admin/js/auth.js"></script>
+
+  <!-- Package Management Script -->
+  <script>
+    const { client: supabase, formatZAR } = window.joycoSupabase;
+    const modal = document.getElementById('package-modal');
+    const packageForm = document.getElementById('package-form');
+    const addPackageBtn = document.getElementById('add-package-btn');
+    const modalClose = document.getElementById('modal-close');
+    const modalCancel = document.getElementById('modal-cancel');
+    const availableItemsSelect = document.getElementById('available-items');
+    const autoCalcBtn = document.getElementById('auto-calc-btn');
+
+    let allItems = [];
+    let selectedPackageItems = {};
+    let currentPackageId = null;
+
+    // Load all items for selection
+    async function loadAvailableItems() {
+      try {
+        const { data: items, error } = await supabase
+          .from('items')
+          .select('id, name, price_zar')
+          .eq('available', true);
+
+        if (error) throw error;
+
+        allItems = items || [];
+        availableItemsSelect.innerHTML = allItems.map(item => `
+          <option value="${item.id}" data-price="${item.price_zar}">${item.name} (${formatZAR(item.price_zar)}/day)</option>
+        `).join('');
+
+      } catch (error) {
+        console.error('Error loading items:', error);
+      }
+    }
+
+    // Load packages
+    async function loadPackages() {
+      const tbody = document.getElementById('packages-tbody');
+
+      try {
+        const { data: packages, error } = await supabase
+          .from('packages')
+          .select(`
+            id, name, price_zar, featured, published,
+            package_items(item_id, quantity)
+          `)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!packages || packages.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No packages yet. Create one!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = packages.map(pkg => `
+          <tr>
+            <td><strong>${pkg.name}</strong></td>
+            <td>${pkg.package_items?.length || 0} items</td>
+            <td>${formatZAR(pkg.price_zar)}</td>
+            <td>${pkg.featured ? '⭐' : '—'}</td>
+            <td>
+              <span class="status-badge ${pkg.published ? 'status-published' : 'status-draft'}">
+                ${pkg.published ? 'Published' : 'Draft'}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="editPackage('${pkg.id}')">Edit</button>
+                <button class="btn btn-outline" onclick="deletePackage('${pkg.id}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+
+      } catch (error) {
+        console.error('Error loading packages:', error);
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Error loading packages</td></tr>';
+      }
+    }
+
+    // Open add package modal
+    addPackageBtn.addEventListener('click', () => {
+      currentPackageId = null;
+      selectedPackageItems = {};
+      packageForm.reset();
+      document.getElementById('modal-title').textContent = 'Create Package';
+      document.getElementById('package-submit').textContent = 'Create Package';
+      updateSelectedItemsList();
+      modal.classList.add('active');
+    });
+
+    // Close modal
+    function closeModal() {
+      modal.classList.remove('active');
+      packageForm.reset();
+      selectedPackageItems = {};
+      availableItemsSelect.selectedIndex = -1;
+      currentPackageId = null;
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalCancel.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Handle item selection
+    availableItemsSelect.addEventListener('change', () => {
+      Array.from(availableItemsSelect.selectedOptions).forEach(option => {
+        const itemId = option.value;
+        if (!(itemId in selectedPackageItems)) {
+          selectedPackageItems[itemId] = {
+            name: option.text.split(' (')[0],
+            price: parseFloat(option.dataset.price),
+            quantity: 1,
+          };
+        }
+      });
+
+      // Remove deselected items
+      Object.keys(selectedPackageItems).forEach(itemId => {
+        const option = Array.from(availableItemsSelect.options).find(o => o.value === itemId);
+        if (!option || !option.selected) {
+          delete selectedPackageItems[itemId];
+        }
+      });
+
+      updateSelectedItemsList();
+    });
+
+    // Update selected items list and auto-generate description
+    function updateSelectedItemsList() {
+      const list = document.getElementById('selected-items-list');
+      const items = Object.entries(selectedPackageItems);
+
+      if (items.length === 0) {
+        list.innerHTML = '<p style="color: var(--text-secondary); margin: 0;">No items selected yet</p>';
+        document.getElementById('subtotal-price').textContent = 'R0.00';
+        generateDescription();
+        return;
+      }
+
+      let subtotal = 0;
+      list.innerHTML = items.map(([itemId, item]) => {
+        subtotal += item.price * item.quantity;
+        return `
+          <div class="selected-item">
+            <div>${item.name}</div>
+            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${itemId}', this.value)">
+            <button type="button" class="btn btn-sm btn-outline" onclick="removeSelectedItem('${itemId}')">Remove</button>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('subtotal-price').textContent = formatZAR(subtotal);
+      generateDescription();
+    }
+
+    function updateQuantity(itemId, quantity) {
+      selectedPackageItems[itemId].quantity = parseInt(quantity) || 1;
+      updateSelectedItemsList();
+    }
+
+    function removeSelectedItem(itemId) {
+      delete selectedPackageItems[itemId];
+      const option = Array.from(availableItemsSelect.options).find(o => o.value === itemId);
+      if (option) option.selected = false;
+      updateSelectedItemsList();
+    }
+
+    // Auto-generate description
+    function generateDescription() {
+      const items = Object.values(selectedPackageItems);
+      if (items.length === 0) {
+        document.getElementById('package-description').value = '';
+        return;
+      }
+
+      const packageName = document.getElementById('package-name').value || 'Party';
+      const itemsList = items.map(i => `• ${i.quantity} × ${i.name}`).join('\n');
+      const description = `The ${packageName} includes:\n${itemsList}\n\nPerfect for events of 20–50 guests.\nAll items professionally delivered and collected by Joy&Co.`;
+
+      document.getElementById('package-description').value = description;
+    }
+
+    // Auto-calculate price
+    autoCalcBtn.addEventListener('click', () => {
+      let subtotal = 0;
+      Object.values(selectedPackageItems).forEach(item => {
+        subtotal += item.price * item.quantity;
+      });
+      // Add 5% markup
+      const packagePrice = subtotal * 1.05;
+      document.getElementById('package-price').value = packagePrice.toFixed(2);
+    });
+
+    // Save package
+    packageForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (Object.keys(selectedPackageItems).length === 0) {
+        alert('Please select at least one item');
+        return;
+      }
+
+      const packageData = {
+        name: document.getElementById('package-name').value,
+        price_zar: parseFloat(document.getElementById('package-price').value),
+        description: document.getElementById('package-description').value,
+        auto_description: true,
+        featured: document.getElementById('package-featured').checked,
+        published: document.getElementById('package-published').checked,
+      };
+
+      try {
+        document.getElementById('package-submit').disabled = true;
+        document.getElementById('package-submit').textContent = 'Saving...';
+
+        if (currentPackageId) {
+          // Update existing package
+          const { error } = await supabase
+            .from('packages')
+            .update(packageData)
+            .eq('id', currentPackageId);
+
+          if (error) throw error;
+
+          // Delete old items
+          await supabase.from('package_items').delete().eq('package_id', currentPackageId);
+        } else {
+          // Create new package
+          const { data, error } = await supabase
+            .from('packages')
+            .insert([packageData])
+            .select();
+
+          if (error) throw error;
+          currentPackageId = data[0].id;
+        }
+
+        // Add package items
+        const packageItems = Object.entries(selectedPackageItems).map(([itemId, item]) => ({
+          package_id: currentPackageId,
+          item_id: itemId,
+          quantity: item.quantity,
+        }));
+
+        const { error: itemsError } = await supabase
+          .from('package_items')
+          .insert(packageItems);
+
+        if (itemsError) throw itemsError;
+
+        closeModal();
+        loadPackages();
+
+      } catch (error) {
+        console.error('Save error:', error);
+        alert('Error saving package: ' + error.message);
+      } finally {
+        document.getElementById('package-submit').disabled = false;
+        document.getElementById('package-submit').textContent = 'Save Package';
+      }
+    });
+
+    // Edit package (stub)
+    async function editPackage(id) {
+      console.log('Edit package:', id);
+      // TODO: Load package data and populate form
+      modal.classList.add('active');
+    }
+
+    // Delete package
+    async function deletePackage(id) {
+      if (!confirm('Delete this package? This cannot be undone.')) return;
+
+      try {
+        await supabase.from('package_items').delete().eq('package_id', id);
+        const { error } = await supabase.from('packages').delete().eq('id', id);
+
+        if (error) throw error;
+        loadPackages();
+
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert('Error deleting package: ' + error.message);
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAvailableItems();
+      loadPackages();
+    });
+  </script>
+</body>
+</html>

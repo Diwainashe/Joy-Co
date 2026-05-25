@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Curated party packages from Joy&Co. Browse ready-made bundles of rental items for weddings, birthdays, corporate events and more.">
+  <meta name="keywords" content="party packages, wedding packages, event bundles, rental packages South Africa">
+
+  <!-- Schema.org ItemList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": []
+  }
+  </script>
+
+  <title>Party & Event Packages | Joy&Co</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Dancing+Script:wght@600&family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-j">J</span><span class="logo-o">o</span><span class="logo-y">y</span><span class="logo-amp">&amp;</span><span class="logo-c">C</span><span class="logo-co">o</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#items">Browse Items</a></li>
+        <li><a href="/packages.html">Packages</a></li>
+        <li><a href="/#contact">Contact</a></li>
+        <li><a href="/admin/index.html" class="btn btn-sm btn-secondary">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section style="background: linear-gradient(145deg, #0a0a0a 0%, #1a0e18 40%, #150b20 70%, #0d0b10 100%); color: white; padding: var(--space-3xl) var(--space-lg); position: relative;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 30% 60%, rgba(200,154,58,0.12) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 70% 40%, rgba(176,148,200,0.10) 0%, transparent 70%); pointer-events: none;"></div>
+    <div class="container" style="position: relative; z-index: 1;">
+      <h1>Curated <em class="hero-script">Packages.</em></h1>
+      <p class="hero-eyebrow">Ready-made bundles for your perfect celebration</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main>
+    <section>
+      <div class="container">
+        <!-- Filter -->
+        <div style="margin-bottom: var(--space-2xl);">
+          <label for="package-category" style="display: block; margin-bottom: var(--space-md);">
+            <strong>Filter by Occasion:</strong>
+          </label>
+          <select id="package-category" aria-label="Filter packages by occasion">
+            <option value="">All Occasions</option>
+            <option value="wedding">Wedding</option>
+            <option value="birthday">Birthday</option>
+            <option value="corporate">Corporate Event</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="celebration">Celebration</option>
+          </select>
+        </div>
+
+        <!-- Packages Grid -->
+        <div id="packages-grid" class="grid">
+          <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-3xl) 0;">
+            <p style="color: var(--text-secondary);">Loading packages...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: var(--color-neutral-50);">
+      <div class="container">
+        <div style="text-align: center;">
+          <h2>Can't find the perfect package?</h2>
+          <p style="margin-bottom: var(--space-lg); color: var(--text-secondary);">
+            Contact us and we can create a custom package tailored to your event needs.
+          </p>
+          <a href="https://wa.me/27XXXXXXXXX" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            💬 Create Custom Package
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: var(--color-neutral-900); color: var(--text-white); padding: var(--space-3xl) var(--space-lg);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-2xl); margin-bottom: var(--space-3xl);">
+        <div>
+          <h3 style="color: var(--text-white);">Joy&Co</h3>
+          <p>Premium party and event rentals across South Africa.</p>
+        </div>
+
+        <div>
+          <h4 style="color: var(--text-white); font-size: var(--fs-h5);">Quick Links</h4>
+          <ul style="list-style: none;">
+            <li><a href="/#items" style="color: var(--color-blue);">Browse Items</a></li>
+            <li><a href="/packages.html" style="color: var(--color-blue);">Packages</a></li>
+            <li><a href="/admin/index.html" style="color: var(--color-blue);">Admin Login</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="color: var(--text-white); font-size: var(--fs-h5);">Contact</h4>
+          <p>
+            Email: <a href="mailto:hello@joyco.co.za" style="color: var(--color-blue);">hello@joyco.co.za</a><br>
+            Phone: <a href="tel:+27XXXXXXXXX" style="color: var(--color-blue);">+27 XX XXX-XXXX</a>
+          </p>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-lg); text-align: center; color: var(--text-light);">
+        <p>&copy; 2024 Joy&Co. All rights reserved. | <a href="#" style="color: var(--color-blue);">Privacy Policy</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Supabase Configuration -->
+  <script src="/js/supabase.js"></script>
+
+  <!-- Packages Script -->
+  <script>
+    // Load and render packages from Supabase
+    async function loadPackages() {
+      const { client, formatZAR, getCardColorClass, getWhatsAppLink } = window.joycoSupabase;
+      const gridElement = document.getElementById('packages-grid');
+      const businessPhone = '27XXXXXXXXX'; // Replace with actual WhatsApp business number
+
+      try {
+        // Fetch packages with items from Supabase
+        const { data: packages, error } = await client
+          .from('packages')
+          .select(`
+            id, name, description, auto_description, price_zar, featured, published,
+            package_items(quantity, items(id, name, price_zar))
+          `)
+          .eq('published', true)
+          .order('featured', { ascending: false })
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error loading packages:', error);
+          gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Failed to load packages. Please try again later.</p>';
+          return;
+        }
+
+        if (!packages || packages.length === 0) {
+          gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No packages available yet.</p>';
+          return;
+        }
+
+        // Render packages
+        gridElement.innerHTML = packages.map((pkg, index) => {
+          const colorClass = getCardColorClass(index);
+          const whatsappLink = getWhatsAppLink(pkg.name, businessPhone);
+          const description = pkg.auto_description || pkg.description;
+          const itemsList = pkg.package_items?.map(pi => `${pi.quantity} × ${pi.items?.name}`).join(', ') || '';
+
+          return `
+            <div class="product-card ${colorClass}">
+              <div style="height: 200px; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); display: flex; align-items: center; justify-content: center; font-size: 60px;">
+                🎁
+              </div>
+              <div class="product-card__content">
+                <h3 class="product-card__name">${pkg.name}</h3>
+                <p class="product-card__description">${description}</p>
+                <div style="font-size: var(--fs-small); margin-bottom: var(--space-md); opacity: 0.9;">
+                  <strong>Includes:</strong><br>${itemsList}
+                </div>
+                <div class="product-card__price">${formatZAR(pkg.price_zar)}</div>
+                <a href="${whatsappLink}" target="_blank" rel="noopener" class="btn product-card__cta">
+                  💬 Enquire
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">An error occurred. Please try again.</p>';
+      }
+    }
+
+    // Filter packages
+    document.getElementById('package-category').addEventListener('change', (e) => {
+      // TODO: Implement package filtering
+      console.log('Filter by occasion:', e.target.value);
+    });
+
+    // Load packages when page loads
+    document.addEventListener('DOMContentLoaded', loadPackages);
+  </script>
+</body>
+</html>
