@@ -1,0 +1,10 @@
+plan.txt
+server.log
+server_err.log
+server/
+.env
+.env.local
+node_modules/
+.DS_Store
+*.log
+.claude/settings.local.json
