@@ -634,8 +634,12 @@
             .from('items')
             .select('*', { count: 'exact', head: true });
 
+          const { count: packagesCount } = await supabaseClient
+            .from('packages')
+            .select('*', { count: 'exact', head: true });
+
           document.getElementById('stat-items').textContent = itemsCount || 0;
-          document.getElementById('stat-packages').textContent = '0';
+          document.getElementById('stat-packages').textContent = packagesCount || 0;
           document.getElementById('stat-bookings').textContent = '0';
           document.getElementById('stat-revenue').textContent = 'R 0';
         } catch (err) {
