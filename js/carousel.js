@@ -73,7 +73,31 @@ class Carousel {
 
     this.wrapper.addEventListener('mouseenter', () => this.pause());
     this.wrapper.addEventListener('mouseleave', () => this.play());
-    this.play();
+
+    this._setupSwipe();
+
+    // Only autoplay on desktop
+    if (!this.isMobile) {
+      this.play();
+    }
+  }
+
+  _setupSwipe() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    this.wrapper.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    this.wrapper.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        this.next();
+      } else if (touchEndX - touchStartX > 50) {
+        this.prev();
+      }
+    }, false);
   }
 
   _update() {

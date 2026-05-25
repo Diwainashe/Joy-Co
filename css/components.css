@@ -525,13 +525,20 @@ input[type="radio"] {
 
 @media (max-width: 640px) {
   .carousel-slide {
-    width: 240px;
-    margin-right: 12px;
+    width: 100%;
+    margin-right: 0;
+    padding: 0 var(--space-md);
+    flex: 0 0 calc(100% - 2 * var(--space-md));
   }
 
   .carousel-slide img {
-    width: 240px;
-    height: 240px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .carousel-wrapper.scrollable .carousel-track {
+    justify-content: flex-start;
   }
 
   .carousel-btn {

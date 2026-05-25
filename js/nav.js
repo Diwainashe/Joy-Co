@@ -4,7 +4,7 @@ class NavManager {
     this.linksId = options.linksId;
     this.logoTriggerId = options.logoTriggerId;
     this.secretTaps = options.secretTaps ?? 5;
-    this.adminPath = options.adminPath ?? '/admin/index.html';
+    this.adminPath = options.adminPath ?? './admin/index.html';
 
     this.burger = this.burgerId ? document.getElementById(this.burgerId) : null;
     this.links = this.linksId ? document.getElementById(this.linksId) : null;
