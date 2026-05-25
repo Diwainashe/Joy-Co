@@ -8,9 +8,14 @@
   <meta name="author" content="Joy&Co">
 
   <!-- Open Graph for social sharing -->
-  <meta property="og:title" content="Joy&Co - Party & Event Rentals">
-  <meta property="og:description" content="Premium party and event rentals across South Africa. Decorations, furniture, lighting and more.">
+  <meta property="og:title" content="Joy&Co - Party & Event Rentals Gauteng">
+  <meta property="og:description" content="Premium party and event rentals across Gauteng and South Africa. Inflatables, soft play, chairs & tables, back arches. Book now!">
   <meta property="og:type" content="business.business">
+  <meta property="og:image" content="/uploads/e.jpeg">
+  <meta property="og:url" content="https://joyco.co.za">
+  <meta property="og:site_name" content="Joy&Co">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/uploads/e.jpeg">
   <meta property="og:locale" content="en_ZA">
 
   <!-- Schema.org LocalBusiness -->
@@ -19,19 +24,38 @@
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Joy&Co",
-    "description": "Premium party and event rental company in South Africa",
+    "description": "Premium party and event rental company specialising in inflatables, soft play, chairs and tables, and back arches across Gauteng and South Africa.",
     "url": "https://joyco.co.za",
+    "telephone": "+27732026535",
+    "email": "hello@joyco.co.za",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "ZA",
+      "addressRegion": "Gauteng",
       "addressLocality": "Johannesburg"
     },
+    "areaServed": [
+      {"@type": "State", "name": "Gauteng"},
+      {"@type": "Country", "name": "South Africa"}
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Party Rental Products",
+      "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Inflatable Hire"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Soft Play Hire"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Tables & Chairs Hire"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Back Arch Hire"}}
+      ]
+    },
     "priceRange": "R25 - R500",
-    "areaServed": ["ZA"]
+    "sameAs": ["https://wa.me/27732026535"]
   }
   </script>
 
-  <title>Joy&Co - Party & Event Rentals South Africa</title>
+  <title>Joy&Co | Party & Event Rentals Gauteng | Inflatables, Soft Play, Tables & Chairs</title>
+  <meta name="description" content="Joy&Co delivers premium party rentals across Gauteng and South Africa — inflatables, soft play, chairs & tables, back arches. Book now via WhatsApp.">
+  <meta name="keywords" content="party rentals Gauteng, event hire Johannesburg, jumping castle hire Gauteng, soft play hire Pretoria, tables chairs hire Gauteng, back arch hire Gauteng, kids party hire South Africa">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,19 +65,24 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/components.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="/uploads/c.jpeg">
+  <link rel="apple-touch-icon" href="/uploads/c.jpeg">
 </head>
 
 <body>
   <!-- Navigation -->
   <nav role="navigation" aria-label="Main navigation">
     <div class="nav-container">
-      <div class="nav-logo">
+      <div class="nav-logo" id="logo-tap-trigger">
         <span class="logo-j">J</span><span class="logo-o">o</span><span class="logo-y">y</span><span class="logo-amp">&amp;</span><span class="logo-c">C</span><span class="logo-co">o</span>
       </div>
-      <ul class="nav-links">
+      <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="nav-links">
         <li><a href="#items">Browse Items</a></li>
         <li><a href="/packages.html">Packages</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -142,29 +171,54 @@
       </div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- Gallery Section -->
     <section>
       <div class="container">
+        <h2 class="text-center">Our Selection</h2>
+        <p class="text-center" style="color: var(--text-secondary); margin-bottom: var(--space-3xl); max-width: 600px; margin-left: auto; margin-right: auto;">Explore our range of premium party rentals — from inflatables and soft play to stylish furniture and elegant back arches.</p>
+
+        <!-- Inflatables Carousel -->
+        <div style="margin-bottom: var(--space-3xl);">
+          <h3 style="margin-bottom: var(--space-lg);">Inflatables</h3>
+          <div class="carousel-wrapper" id="carousel-inflatables">
+            <div class="carousel-track" id="carousel-inflatables-track"></div>
+            <button class="carousel-btn carousel-btn--prev" data-action="prev">❮</button>
+            <button class="carousel-btn carousel-btn--next" data-action="next">❯</button>
+            <div class="carousel-dots" id="carousel-inflatables-dots"></div>
+          </div>
+        </div>
+
+        <!-- Soft Play Carousel -->
+        <div style="margin-bottom: var(--space-3xl);">
+          <h3 style="margin-bottom: var(--space-lg);">Soft Play</h3>
+          <div class="carousel-wrapper" id="carousel-softplay">
+            <div class="carousel-track" id="carousel-softplay-track"></div>
+            <button class="carousel-btn carousel-btn--prev" data-action="prev">❮</button>
+            <button class="carousel-btn carousel-btn--next" data-action="next">❯</button>
+            <div class="carousel-dots" id="carousel-softplay-dots"></div>
+          </div>
+        </div>
+
+        <!-- Brand Carousel -->
+        <div style="margin-bottom: var(--space-3xl);">
+          <h3 style="margin-bottom: var(--space-lg);">Rentals For Life's Best Moments</h3>
+          <div class="carousel-wrapper" id="carousel-brand">
+            <div class="carousel-track" id="carousel-brand-track"></div>
+            <button class="carousel-btn carousel-btn--prev" data-action="prev">❮</button>
+            <button class="carousel-btn carousel-btn--next" data-action="next">❯</button>
+            <div class="carousel-dots" id="carousel-brand-dots"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section aria-label="Customer Reviews">
+      <div class="container">
         <h2 class="text-center">What Our Customers Say</h2>
-
-        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top: var(--space-3xl);">
-          <div class="card">
-            <div style="margin-bottom: var(--space-md);">⭐⭐⭐⭐⭐</div>
-            <p>"Joy&Co made our wedding planning so easy! Premium quality items and professional delivery. Highly recommend!"</p>
-            <p style="font-weight: 600; color: var(--text-primary); margin-top: var(--space-md);">- Sarah M., Johannesburg</p>
-          </div>
-
-          <div class="card">
-            <div style="margin-bottom: var(--space-md);">⭐⭐⭐⭐⭐</div>
-            <p>"Amazing selection and great prices. Everything arrived on time and in perfect condition. Thank you Joy&Co!"</p>
-            <p style="font-weight: 600; color: var(--text-primary); margin-top: var(--space-md);">- John T., Cape Town</p>
-          </div>
-
-          <div class="card">
-            <div style="margin-bottom: var(--space-md);">⭐⭐⭐⭐⭐</div>
-            <p>"For our corporate event, Joy&Co provided exactly what we needed. Professional team and excellent service."</p>
-            <p style="font-weight: 600; color: var(--text-primary); margin-top: var(--space-md);">- Lerato K., Durban</p>
-          </div>
+        <div id="reviews-carousel-container" style="margin-top: var(--space-3xl);"></div>
+        <div style="text-align: center; margin-top: var(--space-2xl);">
+          <a href="/contact.html" class="btn btn-primary btn-lg">Leave a Review</a>
         </div>
       </div>
     </section>
@@ -178,7 +232,7 @@
         </p>
 
         <div style="text-align: center;">
-          <a href="https://wa.me/27XXXXXXXXX" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+          <a href="https://wa.me/27732026535?text=Hi%20Joy%26Co%21%20I%20have%20a%20question%20about%20your%20rentals." class="btn btn-primary btn-lg" target="_blank" rel="noopener">
             💬 Message us on WhatsApp
           </a>
         </div>
@@ -200,6 +254,7 @@
           <ul style="list-style: none;">
             <li><a href="#items" style="color: var(--jc-gold);">Browse Items</a></li>
             <li><a href="/packages.html" style="color: var(--jc-gold);">Packages</a></li>
+            <li><a href="/contact.html" style="color: var(--jc-gold);">Contact</a></li>
           </ul>
         </div>
 
@@ -207,13 +262,13 @@
           <h4 style="color: var(--text-white); font-size: var(--fs-h5);">Contact</h4>
           <p>
             Email: <a href="mailto:hello@joyco.co.za" style="color: var(--jc-gold);">hello@joyco.co.za</a><br>
-            Phone: <a href="tel:+27XXXXXXXXX" style="color: var(--jc-gold);">+27 XX XXX-XXXX</a>
+            Phone: <a href="tel:+27732026535" style="color: var(--jc-gold);">+27 732 026 535</a>
           </p>
         </div>
       </div>
 
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-lg); text-align: center; color: var(--text-light);">
-        <p>&copy; 2024 Joy&Co. All rights reserved. | <a href="#" style="color: var(--jc-gold);">Privacy Policy</a></p>
+        <p>&copy; 2025 Joy&Co. All rights reserved. | <a href="#" style="color: var(--jc-gold);">Privacy Policy</a> | Web Development: <a href="#" style="color: var(--jc-gold);">Diwainashe</a></p>
       </div>
     </div>
   </footer>
@@ -224,21 +279,22 @@
   <!-- Supabase Configuration -->
   <script src="/js/supabase.js"></script>
 
-  <!-- Hidden Admin Access -->
+  <!-- Modular Components -->
+  <script src="/js/carousel.js"></script>
+  <script src="/js/nav.js"></script>
+  <script src="/js/items.js"></script>
+  <script src="/js/reviews-carousel.js"></script>
+
+  <!-- Hidden Admin Access via Keypress -->
   <script>
-    // Admin access: Press 'J' + 'O' + 'Y' within 3 seconds
     let adminKeySequence = '';
     let adminKeyTimeout = null;
 
     document.addEventListener('keypress', (e) => {
       if (e.key.toLowerCase() === 'j' || e.key.toLowerCase() === 'o' || e.key.toLowerCase() === 'y') {
         adminKeySequence += e.key.toLowerCase();
-
         clearTimeout(adminKeyTimeout);
-        adminKeyTimeout = setTimeout(() => {
-          adminKeySequence = '';
-        }, 3000);
-
+        adminKeyTimeout = setTimeout(() => { adminKeySequence = ''; }, 3000);
         if (adminKeySequence === 'joy') {
           window.location.href = '/admin/index.html';
           adminKeySequence = '';
@@ -247,76 +303,78 @@
     });
   </script>
 
-  <!-- Items Page Script -->
+  <!-- Page Boot Script -->
   <script>
-    // Load and render items from Supabase
-    async function loadItems() {
-      const { client, formatZAR, getCardColorClass, getWhatsAppLink } = window.joycoSupabase;
-      const gridElement = document.getElementById('items-grid');
-      const businessPhone = '27XXXXXXXXX'; // Replace with actual WhatsApp business number
+    document.addEventListener('DOMContentLoaded', () => {
+      new NavManager({
+        burgerId: 'nav-burger',
+        linksId: 'nav-links',
+        logoTriggerId: 'logo-tap-trigger'
+      }).init();
 
-      try {
-        // Fetch items from Supabase
-        const { data: items, error } = await client
-          .from('items')
-          .select('id, name, description, price_zar, category, item_images(url, is_primary)')
-          .eq('available', true)
-          .order('featured', { ascending: false })
-          .order('created_at', { ascending: false });
+      new Carousel('inflatables',
+        ['/uploads/inflatables-1.jpeg', '/uploads/inflatables-2.jpeg', '/uploads/inflatables-3.jpeg', '/uploads/inflatables-4.jpeg', '/uploads/big-balls.jpeg'],
+        ['Jumping castle inflatable hire in Gauteng', 'Colorful bouncy castle rental', 'Inflatable slide hire Johannesburg', 'Party inflatable setup', 'Big balls soft play equipment']
+      ).init();
 
-        if (error) {
-          console.error('Error loading items:', error);
-          gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Failed to load items. Please try again later.</p>';
-          return;
-        }
+      new Carousel('softplay',
+        ['/uploads/soft-play-1.jpeg', '/uploads/soft-play-2.jpeg'],
+        ['Soft play hire Pretoria', 'Indoor soft play area rental']
+      ).init();
 
-        if (!items || items.length === 0) {
-          gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No items available yet.</p>';
-          return;
-        }
+      new Carousel('brand',
+        ['/uploads/e.jpeg', '/uploads/f.jpeg', '/uploads/g.jpeg'],
+        ['Joy&Co party rentals showcase', 'Joy&Co event setup inspiration', 'Joy&Co premium service showcase']
+      ).init();
 
-        // Render items
-        gridElement.innerHTML = items.map((item, index) => {
-          const primaryImage = item.item_images?.find(img => img.is_primary)?.url || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3C/svg%3E';
-          const colorClass = getCardColorClass(index);
-          const whatsappLink = getWhatsAppLink(item.name, businessPhone);
+      new ReviewsCarousel('reviews-carousel-container').load();
+      new ItemsLoader('items-grid').load();
+    });
+  </script>
 
-          return `
-            <div class="product-card ${colorClass}">
-              <img src="${primaryImage}" alt="${item.name}" class="product-card__image" loading="lazy">
-              <div class="product-card__content">
-                <h3 class="product-card__name">${item.name}</h3>
-                <p class="product-card__description">${item.description}</p>
-                <div class="product-card__rating">⭐⭐⭐⭐⭐</div>
-                <div class="product-card__price">${formatZAR(item.price_zar)}/day</div>
-                <a href="${whatsappLink}" target="_blank" rel="noopener" class="btn product-card__cta">
-                  💬 Enquire
-                </a>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-      } catch (err) {
-        console.error('Unexpected error:', err);
-        gridElement.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">An error occurred. Please try again.</p>';
-      }
+  <style>
+    .nav-burger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 8px;
+      color: var(--text-primary);
     }
 
-    // Filter items by category
-    document.getElementById('category-filter').addEventListener('change', (e) => {
-      // TODO: Implement filtering
-      console.log('Filter by:', e.target.value);
-    });
+    @media (max-width: 768px) {
+      .nav-burger {
+        display: block;
+      }
 
-    // Search items
-    document.getElementById('search-input').addEventListener('input', (e) => {
-      // TODO: Implement search
-      console.log('Search:', e.target.value);
-    });
+      #nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-neutral-900);
+        flex-direction: column;
+        padding: var(--space-lg);
+        gap: var(--space-md);
+        z-index: 10;
+      }
 
-    // Load items when page loads
-    document.addEventListener('DOMContentLoaded', loadItems);
-  </script>
+      #nav-links.open {
+        display: flex;
+      }
+
+      #nav-links a {
+        color: var(--text-white);
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      #nav-links a:last-child {
+        border-bottom: none;
+      }
+    }
+  </style>
 </body>
 </html>

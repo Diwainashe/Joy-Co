@@ -6,6 +6,9 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Admin Dashboard - Joy&Co</title>
 
+  <link rel="icon" type="image/jpeg" href="/uploads/c.jpeg">
+  <link rel="apple-touch-icon" href="/uploads/c.jpeg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -257,22 +260,69 @@
       color: var(--text-secondary);
     }
 
+    /* Mobile nav burger */
+    .admin-nav-burger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: white;
+      padding: 8px;
+      margin-right: 12px;
+    }
+
+    .admin-nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+
+    .admin-nav-overlay.open {
+      display: block;
+    }
+
     /* Responsive */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .admin-sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 101;
+      }
+
+      .admin-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .admin-nav-burger {
+        display: block;
+      }
+
+      .admin-nav-overlay {
+        display: none;
+      }
+
+      .admin-nav-overlay.open {
+        display: block;
       }
 
       .admin-main {
         margin-left: 0;
+        width: 100%;
       }
 
       .admin-header {
         padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
 
       .admin-content {
@@ -281,6 +331,36 @@
 
       .stats-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .admin-table {
+        font-size: 0.9rem;
+      }
+
+      .admin-table th,
+      .admin-table td {
+        padding: 8px 4px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .admin-sidebar {
+        width: 100%;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .admin-table th,
+      .admin-table td {
+        padding: 6px 4px;
+        font-size: 0.85rem;
       }
     }
 
@@ -402,6 +482,443 @@
     .hidden {
       display: none !important;
     }
+
+    /* ===== INVENTORY & PACKAGES TABLES ===== */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .admin-table thead {
+      background: var(--color-neutral-100);
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+
+    .admin-table th {
+      text-align: left;
+      padding: 12px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .admin-table tbody tr {
+      border-bottom: 1px solid var(--color-neutral-200);
+      transition: background 0.15s ease;
+    }
+
+    .admin-table tbody tr:hover {
+      background: rgba(255, 110, 180, 0.02);
+    }
+
+    .admin-table td {
+      padding: 14px;
+      color: var(--text-primary);
+    }
+
+    .admin-table td.text-muted {
+      color: var(--text-secondary);
+    }
+
+    .admin-table td.text-price {
+      color: var(--jc-pink);
+      font-weight: 600;
+    }
+
+    .item-swatch {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      display: inline-flex;
+      overflow: hidden;
+    }
+
+    .item-swatch > div {
+      flex: 1;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+
+    .status-badge.published {
+      color: #059669;
+    }
+
+    .status-badge.published::before {
+      content: '●';
+      font-size: 6px;
+    }
+
+    .status-badge.draft {
+      color: var(--text-secondary);
+    }
+
+    .status-badge.draft::before {
+      content: '●';
+      font-size: 6px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 6px 10px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 14px;
+      transition: color 0.15s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--jc-pink);
+    }
+
+    .action-btn.delete:hover {
+      color: var(--jc-coral);
+    }
+
+    /* ===== MODAL ===== */
+    .admin-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .admin-modal.active {
+      display: flex;
+    }
+
+    .admin-modal-content {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+      max-height: 90vh;
+      overflow-y: auto;
+      width: 100%;
+      max-width: 600px;
+      padding: 32px;
+    }
+
+    .admin-modal-header {
+      margin-bottom: 24px;
+    }
+
+    .admin-modal-header h2 {
+      margin: 0;
+      font-size: 24px;
+      color: var(--text-primary);
+    }
+
+    .admin-modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--color-neutral-200);
+    }
+
+    /* ===== FORM STYLES ===== */
+    .admin-form-group {
+      margin-bottom: 20px;
+    }
+
+    .admin-form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .admin-form-group input,
+    .admin-form-group textarea,
+    .admin-form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--color-neutral-200);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+
+    .admin-form-group input:focus,
+    .admin-form-group textarea:focus,
+    .admin-form-group select:focus {
+      outline: none;
+      border-color: var(--jc-pink);
+      box-shadow: 0 0 0 3px rgba(255, 110, 180, 0.1);
+    }
+
+    .admin-form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .admin-form-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    .admin-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ===== IMAGE UPLOAD ===== */
+    .admin-upload-zone {
+      border: 2px dashed var(--color-neutral-300);
+      border-radius: 8px;
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: var(--color-neutral-50);
+    }
+
+    .admin-upload-zone:hover {
+      border-color: var(--jc-pink);
+      background: rgba(255, 110, 180, 0.02);
+    }
+
+    .admin-upload-zone.dragover {
+      border-color: var(--jc-pink);
+      background: rgba(255, 110, 180, 0.1);
+    }
+
+    .admin-upload-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .admin-upload-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .admin-image-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .admin-image-preview {
+      position: relative;
+      aspect-ratio: 1;
+      border: 1px solid var(--color-neutral-200);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--color-neutral-100);
+    }
+
+    .admin-image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .admin-image-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 28px;
+      height: 28px;
+      background: rgba(0, 0, 0, 0.6);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .admin-image-preview:hover .admin-image-remove {
+      opacity: 1;
+    }
+
+    /* ===== PACKAGE BUILDER STYLES ===== */
+    .item-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .item-select-card {
+      border: 1px solid var(--color-neutral-200);
+      border-radius: 6px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    .item-select-card:hover {
+      border-color: var(--jc-pink);
+    }
+
+    .item-select-card.selected {
+      border-color: var(--jc-pink);
+      background: rgba(255, 110, 180, 0.05);
+    }
+
+    .item-select-card input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--color-neutral-200);
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    .qty-stepper button {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--text-primary);
+      transition: background 0.15s ease;
+    }
+
+    .qty-stepper button:hover {
+      background: var(--color-neutral-100);
+    }
+
+    .qty-stepper input {
+      width: 40px;
+      text-align: center;
+      border: none;
+      padding: 4px;
+      font-size: 13px;
+    }
+
+    .qty-stepper input:focus {
+      outline: none;
+    }
+
+    .price-summary {
+      background: var(--color-neutral-50);
+      border: 1px solid var(--color-neutral-200);
+      border-radius: 6px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .price-summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .price-summary-row:last-child {
+      margin-bottom: 0;
+      padding-top: 12px;
+      border-top: 1px solid var(--color-neutral-200);
+      font-weight: 600;
+      color: var(--jc-pink);
+    }
+
+    /* ===== SECTION SPECIFIC ===== */
+    #inventory-section,
+    #packages-section {
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    #inventory-section .admin-section-header,
+    #packages-section .admin-section-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--color-neutral-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .admin-section-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--text-primary);
+    }
+
+    .admin-section-table-wrapper {
+      overflow-x: auto;
+    }
+
+    #add-item-section {
+      background: white;
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    #add-item-section h2 {
+      margin-top: 0;
+      color: var(--text-primary);
+    }
+
+    .add-item-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .add-item-preview {
+      position: sticky;
+      top: 100px;
+    }
+
+    @media (max-width: 768px) {
+      .add-item-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .item-selection-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-image-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
   </style>
 </head>
 
@@ -486,6 +1003,13 @@
             <span>Packages</span>
           </a>
         </li>
+
+        <li class="admin-nav-item">
+          <a href="#" class="admin-nav-link" data-section="reviews">
+            <span>⭐</span>
+            <span>Reviews <span id="pending-badge" style="display: none; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; margin-left: 4px;">0</span></span>
+          </a>
+        </li>
       </nav>
 
       <div class="admin-sidebar-footer">
@@ -496,10 +1020,13 @@
     <!-- Main Content -->
     <main class="admin-main">
       <header class="admin-header">
+        <button class="admin-nav-burger" id="admin-nav-burger" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
         <div>
           <h1 id="page-title">Dashboard</h1>
         </div>
       </header>
+
+      <div class="admin-nav-overlay" id="admin-nav-overlay"></div>
 
       <div class="admin-content">
         <!-- Dashboard Section -->
@@ -556,23 +1083,268 @@
 
         <!-- Inventory Section -->
         <section id="inventory-section" style="display: none;">
-          <p style="color: var(--text-secondary); text-align: center; padding: 40px 20px;">
-            Inventory management coming soon...
-          </p>
+          <div class="admin-section-header">
+            <h2>Inventory</h2>
+            <button onclick="showSection('add-item')" class="btn btn-primary" style="margin: 0;">➕ Add New Item</button>
+          </div>
+          <div class="admin-section-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Category</th>
+                  <th>Price (ZAR)</th>
+                  <th>Stock</th>
+                  <th>Featured</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-tbody">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                    Loading items...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
 
         <!-- Add Item Section -->
         <section id="add-item-section" style="display: none;">
-          <p style="color: var(--text-secondary); text-align: center; padding: 40px 20px;">
-            Item upload form coming soon...
-          </p>
+          <h2 id="add-item-title">Add New Item</h2>
+          <div class="add-item-form-grid">
+            <div>
+              <form id="item-form">
+                <div class="admin-form-group">
+                  <label>Item Name *</label>
+                  <input type="text" id="item-name" placeholder="e.g. Whitesands Bouncy Castle" required>
+                </div>
+
+                <div class="admin-form-row">
+                  <div class="admin-form-group">
+                    <label>Category</label>
+                    <select id="item-category">
+                      <option>Inflatables</option>
+                      <option>Soft Play</option>
+                      <option>Seating</option>
+                      <option>Backdrops</option>
+                      <option>Decor</option>
+                    </select>
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Price per Day (ZAR) *</label>
+                    <input type="number" id="item-price" placeholder="850" required>
+                  </div>
+                </div>
+
+                <div class="admin-form-row">
+                  <div class="admin-form-group">
+                    <label>Stock Quantity</label>
+                    <input type="number" id="item-stock" value="1" min="0">
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Damage Deposit (ZAR)</label>
+                    <input type="number" id="item-deposit" placeholder="0">
+                  </div>
+                </div>
+
+                <div class="admin-form-group">
+                  <label>Description</label>
+                  <textarea id="item-description" placeholder="Describe this item..."></textarea>
+                </div>
+
+                <div class="admin-form-group">
+                  <label>Image Upload</label>
+                  <div class="admin-upload-zone" id="upload-zone">
+                    <div class="admin-upload-icon">📸</div>
+                    <div class="admin-upload-text">Drag images here or click to browse</div>
+                  </div>
+                  <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                  <div class="admin-image-grid" id="image-preview-grid"></div>
+                </div>
+
+                <div class="admin-form-row">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>
+                      <input type="checkbox" id="item-featured"> Featured Item
+                    </label>
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>
+                      <input type="checkbox" id="item-available" checked> Available to Rent
+                    </label>
+                  </div>
+                </div>
+
+                <div class="admin-modal-footer" style="margin: 24px -32px -32px; padding: 20px 32px; border-top: 1px solid var(--color-neutral-200);">
+                  <button type="button" onclick="showSection('inventory')" class="btn btn-secondary">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save Item</button>
+                </div>
+              </form>
+            </div>
+            <div class="add-item-preview">
+              <p style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Live Preview</p>
+              <div id="item-preview" style="background: white; border: 1px solid var(--color-neutral-200); border-radius: 8px; padding: 16px; text-align: center; color: var(--text-secondary); min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                Preview will appear here
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- Packages Section -->
         <section id="packages-section" style="display: none;">
-          <p style="color: var(--text-secondary); text-align: center; padding: 40px 20px;">
-            Package builder coming soon...
-          </p>
+          <div class="admin-section-header">
+            <h2>Packages</h2>
+            <button onclick="openPackageModal()" class="btn btn-primary" style="margin: 0;">🎁 Create Package</button>
+          </div>
+          <div class="admin-section-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Package Name</th>
+                  <th>Items</th>
+                  <th>Price (ZAR)</th>
+                  <th>Featured</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="packages-tbody">
+                <tr>
+                  <td colspan="6" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                    Loading packages...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Package Modal -->
+        <div id="package-modal" class="admin-modal">
+          <div class="admin-modal-content">
+            <div class="admin-modal-header">
+              <h2 id="package-modal-title">Create Package</h2>
+            </div>
+
+            <form id="package-form">
+              <div class="admin-form-group">
+                <label>Package Name *</label>
+                <input type="text" id="package-name" placeholder="e.g. The First Birthday" required>
+              </div>
+
+              <div class="admin-form-group">
+                <label>Select Items</label>
+                <div class="item-selection-grid" id="package-items-grid"></div>
+              </div>
+
+              <div class="admin-form-group">
+                <label>Description</label>
+                <div style="margin-bottom: 12px;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500; margin-right: 16px;">
+                    <input type="radio" name="description-mode" value="auto" checked> Auto-generate
+                  </label>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;">
+                    <input type="radio" name="description-mode" value="custom"> Custom
+                  </label>
+                </div>
+                <textarea id="package-description" placeholder="Auto-generated description will appear here..."></textarea>
+              </div>
+
+              <div class="price-summary">
+                <div class="price-summary-row">
+                  <span>Subtotal:</span>
+                  <span id="package-subtotal">R 0</span>
+                </div>
+                <div class="price-summary-row">
+                  <label for="package-price" style="font-weight: normal; cursor: pointer;">Package Price (ZAR):</label>
+                  <input type="number" id="package-price" style="width: auto; border: none; padding: 0; text-align: right;" required>
+                </div>
+                <div class="price-summary-row">
+                  <span>Customer Saves:</span>
+                  <span id="package-savings" style="color: #059669;">R 0</span>
+                </div>
+              </div>
+
+              <div class="admin-form-row">
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>
+                    <input type="checkbox" id="package-featured"> Featured Package
+                  </label>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>
+                    <input type="checkbox" id="package-published"> Publish Now
+                  </label>
+                </div>
+              </div>
+
+              <div class="admin-modal-footer">
+                <button type="button" onclick="closePackageModal()" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="package-save-btn">Create Package</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <section id="reviews-section" style="display: none;">
+          <h2>Customer Reviews</h2>
+
+          <div style="display: flex; gap: 12px; margin-bottom: var(--space-2xl); border-bottom: 1px solid var(--color-neutral-300); padding-bottom: var(--space-lg);">
+            <button class="btn btn-sm" id="pending-tab" onclick="showReviewsTab('pending')" style="background: var(--jc-gold); color: black; border: none;">
+              Pending
+            </button>
+            <button class="btn btn-sm btn-secondary" id="approved-tab" onclick="showReviewsTab('approved')" style="border: 1px solid var(--color-neutral-400);">
+              Approved
+            </button>
+          </div>
+
+          <div id="pending-reviews-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Rating</th>
+                  <th>Review</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="pending-reviews-tbody">
+                <tr>
+                  <td colspan="6" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                    Loading pending reviews...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="approved-reviews-container" style="display: none;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Rating</th>
+                  <th>Review</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="approved-reviews-tbody">
+                <tr>
+                  <td colspan="6" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                    Loading approved reviews...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
     </main>
@@ -638,10 +1410,23 @@
             .from('packages')
             .select('*', { count: 'exact', head: true });
 
+          const { count: pendingCount } = await supabaseClient
+            .from('reviews')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'pending');
+
           document.getElementById('stat-items').textContent = itemsCount || 0;
           document.getElementById('stat-packages').textContent = packagesCount || 0;
           document.getElementById('stat-bookings').textContent = '0';
           document.getElementById('stat-revenue').textContent = 'R 0';
+
+          const badge = document.getElementById('pending-badge');
+          if (pendingCount > 0) {
+            badge.textContent = pendingCount;
+            badge.style.display = 'inline-flex';
+          } else {
+            badge.style.display = 'none';
+          }
         } catch (err) {
           console.error('Error loading stats:', err);
           document.getElementById('stat-items').textContent = '0';
@@ -649,6 +1434,140 @@
           document.getElementById('stat-bookings').textContent = '0';
           document.getElementById('stat-revenue').textContent = 'R 0';
         }
+      }
+
+      // Reviews management
+      async function loadPendingReviews() {
+        try {
+          const { data: reviews, error } = await supabaseClient
+            .from('reviews')
+            .select('*')
+            .eq('status', 'pending')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+
+          const tbody = document.getElementById('pending-reviews-tbody');
+          if (!reviews || reviews.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">No pending reviews</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = reviews.map(r => `
+            <tr>
+              <td>${r.name}</td>
+              <td>${r.location || '—'}</td>
+              <td>${'⭐'.repeat(r.rating)}</td>
+              <td style="max-width: 300px; white-space: normal;">${r.body.substring(0, 80)}${r.body.length > 80 ? '...' : ''}</td>
+              <td>${new Date(r.created_at).toLocaleDateString('en-ZA')}</td>
+              <td>
+                <button onclick="approveReview('${r.id}')" class="btn btn-sm btn-primary" style="margin-right: 4px;">Approve</button>
+                <button onclick="deleteReview('${r.id}', 'pending')" class="btn btn-sm btn-secondary">Delete</button>
+              </td>
+            </tr>
+          `).join('');
+        } catch (err) {
+          console.error('Error loading pending reviews:', err);
+          document.getElementById('pending-reviews-tbody').innerHTML = '<tr><td colspan="6" style="text-align: center; color: #ef4444;">Error loading reviews</td></tr>';
+        }
+      }
+
+      async function loadApprovedReviews() {
+        try {
+          const { data: reviews, error } = await supabaseClient
+            .from('reviews')
+            .select('*')
+            .eq('status', 'approved')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+
+          const tbody = document.getElementById('approved-reviews-tbody');
+          if (!reviews || reviews.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">No approved reviews</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = reviews.map(r => `
+            <tr>
+              <td>${r.name}</td>
+              <td>${r.location || '—'}</td>
+              <td>${'⭐'.repeat(r.rating)}</td>
+              <td style="max-width: 300px; white-space: normal;">${r.body.substring(0, 80)}${r.body.length > 80 ? '...' : ''}</td>
+              <td>${new Date(r.created_at).toLocaleDateString('en-ZA')}</td>
+              <td>
+                <button onclick="deleteReview('${r.id}', 'approved')" class="btn btn-sm btn-secondary">Delete</button>
+              </td>
+            </tr>
+          `).join('');
+        } catch (err) {
+          console.error('Error loading approved reviews:', err);
+          document.getElementById('approved-reviews-tbody').innerHTML = '<tr><td colspan="6" style="text-align: center; color: #ef4444;">Error loading reviews</td></tr>';
+        }
+      }
+
+      async function approveReview(id) {
+        if (!confirm('Approve this review?')) return;
+        try {
+          const { error } = await supabaseClient
+            .from('reviews')
+            .update({ status: 'approved' })
+            .eq('id', id);
+
+          if (error) throw error;
+          loadPendingReviews();
+          loadStats();
+        } catch (err) {
+          console.error('Error approving review:', err);
+          alert('Error approving review');
+        }
+      }
+
+      async function deleteReview(id, tab) {
+        if (!confirm('Delete this review?')) return;
+        try {
+          const { error } = await supabaseClient
+            .from('reviews')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          if (tab === 'pending') loadPendingReviews();
+          else loadApprovedReviews();
+          loadStats();
+        } catch (err) {
+          console.error('Error deleting review:', err);
+          alert('Error deleting review');
+        }
+      }
+
+      function showReviewsTab(tab) {
+        const pendingContainer = document.getElementById('pending-reviews-container');
+        const approvedContainer = document.getElementById('approved-reviews-container');
+        const pendingTab = document.getElementById('pending-tab');
+        const approvedTab = document.getElementById('approved-tab');
+
+        if (tab === 'pending') {
+          pendingContainer.style.display = 'block';
+          approvedContainer.style.display = 'none';
+          pendingTab.style.background = 'var(--jc-gold)';
+          pendingTab.style.color = 'black';
+          approvedTab.style.background = 'transparent';
+          approvedTab.style.color = 'var(--text-primary)';
+          loadPendingReviews();
+        } else {
+          pendingContainer.style.display = 'none';
+          approvedContainer.style.display = 'block';
+          pendingTab.style.background = 'transparent';
+          pendingTab.style.color = 'var(--text-primary)';
+          approvedTab.style.background = 'var(--jc-gold)';
+          approvedTab.style.color = 'black';
+          loadApprovedReviews();
+        }
+      }
+
+      function initReviews() {
+        loadPendingReviews();
       }
 
       // Handle login
@@ -737,9 +1656,541 @@
         'dashboard': 'Dashboard',
         'inventory': 'Inventory',
         'add-item': 'Add Item',
-        'packages': 'Packages'
+        'packages': 'Packages',
+        'reviews': 'Reviews'
       };
       document.getElementById('page-title').textContent = titles[sectionName] || 'Admin';
+
+      // Trigger section-specific init on first load
+      if (sectionName === 'inventory' && !window.inventoryInitialized) {
+        initInventory();
+      } else if (sectionName === 'packages' && !window.packagesInitialized) {
+        initPackages();
+      } else if (sectionName === 'reviews' && !window.reviewsInitialized) {
+        window.reviewsInitialized = true;
+        initReviews();
+      }
+
+      // Update item preview when showing add-item section
+      if (sectionName === 'add-item') {
+        updateItemPreview();
+      }
+    }
+
+    // ===== INVENTORY SECTION =====
+    window.inventoryInitialized = false;
+    let editingItemId = null;
+
+    async function initInventory() {
+      if (window.inventoryInitialized) return;
+      window.inventoryInitialized = true;
+      await loadInventoryItems();
+    }
+
+    async function loadInventoryItems() {
+      const tbody = document.getElementById('inventory-tbody');
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">Loading...</td></tr>';
+
+      try {
+        const { data: items, error } = await supabaseClient
+          .from('items')
+          .select('id, name, category, price_zar, stock_qty, featured, available')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!items || items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">No items yet. <a href="#" onclick="showSection(\'add-item\'); return false;" style="color: var(--jc-pink);">Add one now.</a></td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = items.map(item => `
+          <tr>
+            <td>${item.name}</td>
+            <td class="text-muted">${item.category}</td>
+            <td class="text-price">R ${item.price_zar.toLocaleString()}</td>
+            <td>${item.stock_qty}</td>
+            <td>${item.featured ? '✓' : '—'}</td>
+            <td><span class="status-badge ${item.available ? 'published' : 'draft'}">${item.available ? 'Available' : 'Unavailable'}</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn" onclick="editItemClick('${item.id}')" title="Edit">✎</button>
+                <button class="action-btn delete" onclick="deleteItemClick('${item.id}')" title="Delete">🗑</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('Error loading items:', err);
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--jc-coral);">Error loading items</td></tr>';
+      }
+    }
+
+    async function editItemClick(itemId) {
+      editingItemId = itemId;
+      document.getElementById('add-item-title').textContent = 'Edit Item';
+      document.getElementById('item-form').querySelector('button[type="submit"]').textContent = 'Save Changes';
+
+      try {
+        const { data: item, error } = await supabaseClient
+          .from('items')
+          .select('*')
+          .eq('id', itemId)
+          .single();
+
+        if (error) throw error;
+
+        // Populate form
+        document.getElementById('item-name').value = item.name || '';
+        document.getElementById('item-category').value = item.category || 'Inflatables';
+        document.getElementById('item-price').value = item.price_zar || '';
+        document.getElementById('item-stock').value = item.stock_qty || 1;
+        document.getElementById('item-deposit').value = item.damage_deposit || '';
+        document.getElementById('item-description').value = item.description || '';
+        document.getElementById('item-featured').checked = item.featured || false;
+        document.getElementById('item-available').checked = item.available !== false;
+
+        showSection('add-item');
+        updateItemPreview();
+      } catch (err) {
+        console.error('Error loading item:', err);
+        alert('Error loading item data');
+      }
+    }
+
+    async function deleteItemClick(itemId) {
+      if (!confirm('Delete this item? This cannot be undone.')) return;
+
+      try {
+        const { error } = await supabaseClient
+          .from('items')
+          .delete()
+          .eq('id', itemId);
+
+        if (error) throw error;
+        await loadInventoryItems();
+      } catch (err) {
+        console.error('Error deleting item:', err);
+        alert('Error deleting item');
+      }
+    }
+
+    // ===== ADD ITEM SECTION =====
+    const itemForm = document.getElementById('item-form');
+    const uploadZone = document.getElementById('upload-zone');
+    const fileInput = document.getElementById('file-input');
+    const imagePreviewGrid = document.getElementById('image-preview-grid');
+    let selectedFiles = [];
+
+    // File upload handling
+    uploadZone.addEventListener('click', () => fileInput.click());
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      addFiles(files);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      addFiles(Array.from(e.target.files));
+    });
+
+    // Wire preview updates to form field changes
+    ['item-name', 'item-price', 'item-description'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateItemPreview);
+    });
+    ['item-category', 'item-available', 'item-featured'].forEach(id => {
+      document.getElementById(id).addEventListener('change', updateItemPreview);
+    });
+
+    function addFiles(files) {
+      selectedFiles = [...selectedFiles, ...files];
+      renderImagePreviews();
+    }
+
+    function renderImagePreviews() {
+      imagePreviewGrid.innerHTML = selectedFiles.map((file, idx) => `
+        <div class="admin-image-preview">
+          <img src="${URL.createObjectURL(file)}" alt="Preview">
+          <button type="button" class="admin-image-remove" onclick="removeImage(${idx})" title="Remove">×</button>
+        </div>
+      `).join('');
+      updateItemPreview();
+    }
+
+    window.removeImage = function(idx) {
+      selectedFiles.splice(idx, 1);
+      renderImagePreviews();
+    };
+
+    function updateItemPreview() {
+      const name = document.getElementById('item-name').value || 'Item Name';
+      const price = document.getElementById('item-price').value;
+      const description = document.getElementById('item-description').value || 'Description will appear here';
+      const available = document.getElementById('item-available').checked;
+      const priceFormatted = price ? window.joycoSupabase.formatZAR(parseFloat(price)) + '/day' : 'R —';
+
+      const imageHtml = selectedFiles.length > 0
+        ? `<img src="${URL.createObjectURL(selectedFiles[0])}" alt="${name}" class="product-card__image">`
+        : `<div class="product-card__image" style="background: #e5e7eb;"></div>`;
+
+      const previewHtml = `
+        <div class="product-card card--coral" style="position: relative;">
+          ${imageHtml}
+          ${!available ? '<div style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Unavailable</div>' : ''}
+          <div class="product-card__content">
+            <h3 class="product-card__name" style="color: ${name === 'Item Name' ? '#ccc' : 'white'};">${name}</h3>
+            <p class="product-card__description" style="color: ${description === 'Description will appear here' ? '#ccc' : 'rgba(255,255,255,0.95)'};">${description}</p>
+            <div class="product-card__rating">⭐⭐⭐⭐⭐</div>
+            <div class="product-card__price">${priceFormatted}</div>
+            <a class="btn product-card__cta">💬 Enquire</a>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('item-preview').innerHTML = previewHtml;
+    }
+
+    itemForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const itemData = {
+        name: document.getElementById('item-name').value,
+        category: document.getElementById('item-category').value,
+        price_zar: parseFloat(document.getElementById('item-price').value),
+        stock_qty: parseInt(document.getElementById('item-stock').value) || 1,
+        damage_deposit: document.getElementById('item-deposit').value ? parseFloat(document.getElementById('item-deposit').value) : null,
+        description: document.getElementById('item-description').value,
+        featured: document.getElementById('item-featured').checked,
+        available: document.getElementById('item-available').checked
+      };
+
+      try {
+        let itemId = editingItemId;
+
+        if (editingItemId) {
+          // Update existing
+          const { error } = await supabaseClient
+            .from('items')
+            .update(itemData)
+            .eq('id', itemId);
+          if (error) throw error;
+        } else {
+          // Insert new
+          const { data, error } = await supabaseClient
+            .from('items')
+            .insert([itemData])
+            .select()
+            .single();
+          if (error) throw error;
+          itemId = data.id;
+        }
+
+        // Upload images
+        for (const file of selectedFiles) {
+          const timestamp = Date.now();
+          const path = `${itemId}/${timestamp}-${file.name}`;
+          const { error } = await supabaseClient
+            .storage
+            .from('item-images')
+            .upload(path, file, { upsert: true });
+          if (error) console.warn('Image upload warning:', error);
+        }
+
+        // Reset and go back
+        editingItemId = null;
+        selectedFiles = [];
+        itemForm.reset();
+        document.getElementById('add-item-title').textContent = 'Add New Item';
+        itemForm.querySelector('button[type="submit"]').textContent = 'Save Item';
+        imagePreviewGrid.innerHTML = '';
+        showSection('inventory');
+        await loadInventoryItems();
+      } catch (err) {
+        console.error('Error saving item:', err);
+        alert('Error saving item');
+      }
+    });
+
+    // ===== PACKAGES SECTION =====
+    window.packagesInitialized = false;
+    let editingPackageId = null;
+    let selectedPackageItems = {};
+
+    async function initPackages() {
+      if (window.packagesInitialized) return;
+      window.packagesInitialized = true;
+      await loadPackageItems();
+      await loadPackagesList();
+    }
+
+    async function loadPackageItems() {
+      const grid = document.getElementById('package-items-grid');
+      try {
+        const { data: items, error } = await supabaseClient
+          .from('items')
+          .select('id, name, price_zar')
+          .eq('available', true);
+
+        if (error) throw error;
+
+        grid.innerHTML = items.map(item => `
+          <label class="item-select-card" onclick="togglePackageItem('${item.id}')">
+            <input type="checkbox" data-item-id="${item.id}" onchange="updateSelectedItems()">
+            <div style="text-align: left; margin-top: 8px;">
+              <div style="font-weight: 500; font-size: 13px;">${item.name}</div>
+              <div style="font-size: 12px; color: var(--jc-pink); margin-top: 4px;">R ${item.price_zar.toLocaleString()}</div>
+            </div>
+          </label>
+        `).join('');
+      } catch (err) {
+        console.error('Error loading items:', err);
+      }
+    }
+
+    window.togglePackageItem = function(itemId) {
+      const checkbox = document.querySelector(`input[data-item-id="${itemId}"]`);
+      const card = checkbox.closest('.item-select-card');
+
+      if (checkbox.checked) {
+        selectedPackageItems[itemId] = { id: itemId, qty: 1 };
+        card.classList.add('selected');
+      } else {
+        delete selectedPackageItems[itemId];
+        card.classList.remove('selected');
+      }
+      updateSelectedItems();
+    };
+
+    window.updateSelectedItems = function() {
+      const subtotal = Object.values(selectedPackageItems).reduce((sum, item) => {
+        const row = Array.from(document.querySelectorAll(`input[data-item-id="${item.id}"]`));
+        const qtyInput = document.querySelector(`#qty-${item.id}`);
+        if (qtyInput) {
+          item.qty = parseInt(qtyInput.value) || 1;
+        }
+        const itemPrice = parseFloat(document.querySelector(`input[data-item-id="${item.id}"]`)?.closest('.item-select-card')?.textContent.match(/R\s*([\d,]+)/)?.[1]?.replace(/,/g, '') || 0);
+        return sum + (itemPrice * item.qty);
+      }, 0);
+
+      document.getElementById('package-subtotal').textContent = `R ${subtotal.toLocaleString()}`;
+      const suggestedPrice = Math.round(subtotal * 0.9);
+      document.getElementById('package-price').placeholder = suggestedPrice;
+
+      const actualPrice = parseFloat(document.getElementById('package-price').value) || suggestedPrice;
+      const savings = subtotal - actualPrice;
+      document.getElementById('package-savings').textContent = `R ${Math.max(0, savings).toLocaleString()}`;
+    };
+
+    async function loadPackagesList() {
+      const tbody = document.getElementById('packages-tbody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">Loading...</td></tr>';
+
+      try {
+        const { data: packages, error } = await supabaseClient
+          .from('packages')
+          .select('id, name, price_zar, featured, published, package_items(item_id, quantity)')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!packages || packages.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">No packages yet. <a href="#" onclick="openPackageModal(); return false;" style="color: var(--jc-pink);">Create one now.</a></td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = packages.map(pkg => `
+          <tr>
+            <td><strong>${pkg.name}</strong></td>
+            <td>${pkg.package_items?.length || 0} items</td>
+            <td class="text-price">R ${pkg.price_zar.toLocaleString()}</td>
+            <td>${pkg.featured ? '✓' : '—'}</td>
+            <td><span class="status-badge ${pkg.published ? 'published' : 'draft'}">${pkg.published ? 'Published' : 'Draft'}</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn" onclick="editPackageClick('${pkg.id}')" title="Edit">✎</button>
+                <button class="action-btn delete" onclick="deletePackageClick('${pkg.id}')" title="Delete">🗑</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('Error loading packages:', err);
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: var(--jc-coral);">Error loading packages</td></tr>';
+      }
+    }
+
+    window.openPackageModal = function() {
+      editingPackageId = null;
+      selectedPackageItems = {};
+      document.getElementById('package-modal-title').textContent = 'Create Package';
+      document.getElementById('package-save-btn').textContent = 'Create Package';
+      document.getElementById('package-form').reset();
+      document.getElementById('package-modal').classList.add('active');
+      document.querySelectorAll('.item-select-card').forEach(c => c.classList.remove('selected'));
+      updateSelectedItems();
+    };
+
+    window.closePackageModal = function() {
+      document.getElementById('package-modal').classList.remove('active');
+    };
+
+    window.editPackageClick = async function(packageId) {
+      editingPackageId = packageId;
+      document.getElementById('package-modal-title').textContent = 'Edit Package';
+      document.getElementById('package-save-btn').textContent = 'Save Changes';
+
+      try {
+        const { data: pkg, error } = await supabaseClient
+          .from('packages')
+          .select('*')
+          .eq('id', packageId)
+          .single();
+
+        if (error) throw error;
+
+        document.getElementById('package-name').value = pkg.name;
+        document.getElementById('package-description').value = pkg.description || '';
+        document.getElementById('package-price').value = pkg.price_zar;
+        document.getElementById('package-featured').checked = pkg.featured;
+        document.getElementById('package-published').checked = pkg.published;
+
+        // Load and select items
+        selectedPackageItems = {};
+        const { data: packageItems } = await supabaseClient
+          .from('package_items')
+          .select('item_id, quantity')
+          .eq('package_id', packageId);
+
+        packageItems.forEach(pi => {
+          selectedPackageItems[pi.item_id] = { id: pi.item_id, qty: pi.quantity };
+          const checkbox = document.querySelector(`input[data-item-id="${pi.item_id}"]`);
+          const card = checkbox?.closest('.item-select-card');
+          if (checkbox) checkbox.checked = true;
+          if (card) card.classList.add('selected');
+        });
+
+        updateSelectedItems();
+        document.getElementById('package-modal').classList.add('active');
+      } catch (err) {
+        console.error('Error loading package:', err);
+        alert('Error loading package');
+      }
+    };
+
+    window.deletePackageClick = async function(packageId) {
+      if (!confirm('Delete this package? This cannot be undone.')) return;
+
+      try {
+        // Delete package_items first (cascade doesn't auto-work on many-to-many)
+        await supabaseClient
+          .from('package_items')
+          .delete()
+          .eq('package_id', packageId);
+
+        const { error } = await supabaseClient
+          .from('packages')
+          .delete()
+          .eq('id', packageId);
+
+        if (error) throw error;
+        await loadPackagesList();
+      } catch (err) {
+        console.error('Error deleting package:', err);
+        alert('Error deleting package');
+      }
+    };
+
+    // Package form submit
+    document.getElementById('package-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const packageData = {
+        name: document.getElementById('package-name').value,
+        description: document.getElementById('package-description').value,
+        price_zar: parseFloat(document.getElementById('package-price').value),
+        featured: document.getElementById('package-featured').checked,
+        published: document.getElementById('package-published').checked
+      };
+
+      try {
+        let packageId = editingPackageId;
+
+        if (editingPackageId) {
+          const { error } = await supabaseClient
+            .from('packages')
+            .update(packageData)
+            .eq('id', packageId);
+          if (error) throw error;
+
+          // Delete old items and insert new ones
+          await supabaseClient.from('package_items').delete().eq('package_id', packageId);
+        } else {
+          const { data, error } = await supabaseClient
+            .from('packages')
+            .insert([packageData])
+            .select()
+            .single();
+          if (error) throw error;
+          packageId = data.id;
+        }
+
+        // Insert new package_items
+        const itemsToInsert = Object.values(selectedPackageItems).map(item => ({
+          package_id: packageId,
+          item_id: item.id,
+          quantity: item.qty
+        }));
+
+        if (itemsToInsert.length > 0) {
+          const { error } = await supabaseClient
+            .from('package_items')
+            .insert(itemsToInsert);
+          if (error) throw error;
+        }
+
+        closePackageModal();
+        await loadPackagesList();
+      } catch (err) {
+        console.error('Error saving package:', err);
+        alert('Error saving package');
+      }
+    });
+
+    // Mobile sidebar toggle
+    const adminNavBurger = document.getElementById('admin-nav-burger');
+    const adminSidebar = document.querySelector('.admin-sidebar');
+    const adminNavOverlay = document.getElementById('admin-nav-overlay');
+
+    if (adminNavBurger) {
+      adminNavBurger.addEventListener('click', () => {
+        adminSidebar.classList.toggle('open');
+        adminNavOverlay.classList.toggle('open');
+        const isOpen = adminSidebar.classList.contains('open');
+        adminNavBurger.textContent = isOpen ? '✕' : '☰';
+        adminNavBurger.setAttribute('aria-expanded', isOpen);
+      });
+
+      adminNavOverlay.addEventListener('click', () => {
+        adminSidebar.classList.remove('open');
+        adminNavOverlay.classList.remove('open');
+        adminNavBurger.textContent = '☰';
+        adminNavBurger.setAttribute('aria-expanded', 'false');
+      });
+
+      document.querySelectorAll('.admin-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          adminSidebar.classList.remove('open');
+          adminNavOverlay.classList.remove('open');
+          adminNavBurger.textContent = '☰';
+          adminNavBurger.setAttribute('aria-expanded', 'false');
+        });
+      });
     }
 
     // Initialize admin when DOM is ready

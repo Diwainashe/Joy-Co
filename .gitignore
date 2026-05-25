@@ -7,4 +7,5 @@ server/
 node_modules/
 .DS_Store
 *.log
+*.md
 .claude/settings.local.json

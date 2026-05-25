@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Get in touch with Joy&Co or leave a review. Contact us via WhatsApp or share your party rental experience.">
+  <meta name="keywords" content="contact joy&co, party rental review, event hire feedback, Gauteng rentals">
+  <meta name="author" content="Joy&Co">
+
+  <meta property="og:title" content="Contact Joy&Co | Party & Event Rentals">
+  <meta property="og:description" content="Get in touch with Joy&Co or leave a review about your rental experience.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/uploads/e.jpeg">
+  <meta property="og:url" content="https://joyco.co.za/contact.html">
+  <meta property="og:site_name" content="Joy&Co">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/uploads/e.jpeg">
+
+  <title>Contact Joy&Co | Party & Event Rentals Gauteng | Leave a Review</title>
+
+  <link rel="icon" type="image/jpeg" href="/uploads/c.jpeg">
+  <link rel="apple-touch-icon" href="/uploads/c.jpeg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Dancing+Script:wght@600&family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+
+  <style>
+    .contact-content { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3xl); margin-top: var(--space-3xl); }
+    @media (max-width: 640px) {
+      .contact-content { grid-template-columns: 1fr; gap: var(--space-2xl); }
+    }
+
+    .contact-section { background: var(--color-neutral-50); padding: var(--space-2xl); border-radius: 8px; }
+    .contact-section h3 { margin-bottom: var(--space-md); }
+    .contact-section p { color: var(--text-secondary); margin-bottom: var(--space-md); line-height: 1.6; }
+
+    .review-form { display: flex; flex-direction: column; gap: var(--space-md); }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-weight: 500; margin-bottom: 6px; color: var(--text-primary); }
+    .form-group input, .form-group textarea { padding: 12px; border: 1px solid var(--color-neutral-300); border-radius: 6px; font-family: inherit; font-size: 1rem; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--jc-gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .star-rating { display: flex; gap: 12px; margin-bottom: 6px; }
+    .star-input { display: none; }
+    .star-label { font-size: 2rem; cursor: pointer; color: var(--color-neutral-400); transition: color 0.2s, transform 0.2s; }
+    .star-label:hover, .star-label:hover ~ .star-label { color: var(--jc-gold); }
+    .star-input:checked ~ .star-label { color: var(--jc-gold); }
+
+    .form-group.star-group { flex-direction: row-reverse; align-items: center; }
+
+    .contact-cta { display: flex; gap: var(--space-md); flex-wrap: wrap; }
+    .contact-cta a { text-decoration: none; }
+
+    .submit-btn { background: var(--color-brand-600); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+    .submit-btn:hover { background: var(--color-brand-700); }
+    .submit-btn:disabled { background: var(--color-neutral-400); cursor: not-allowed; }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <div class="nav-logo" id="logo-tap-trigger">
+        <span class="logo-j">J</span><span class="logo-o">o</span><span class="logo-y">y</span><span class="logo-amp">&amp;</span><span class="logo-c">C</span><span class="logo-co">o</span>
+      </div>
+      <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Browse Items</a></li>
+        <li><a href="/packages.html">Packages</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" style="padding: var(--space-3xl) var(--space-lg);">
+      <div class="container">
+        <h1>Get In Touch</h1>
+        <p style="max-width: 600px;">Have questions about our party rentals? We'd love to hear from you! Or share your Joy&Co experience by leaving a review.</p>
+      </div>
+    </section>
+
+    <!-- Contact & Review Section -->
+    <section style="padding: var(--space-3xl) var(--space-lg);">
+      <div class="container">
+        <div class="contact-content">
+          <!-- Contact Info -->
+          <div class="contact-section">
+            <h3>Message Us</h3>
+            <p>The fastest way to reach us is via WhatsApp. We respond within a few hours, even on weekends!</p>
+
+            <div class="contact-cta">
+              <a href="https://wa.me/27732026535?text=Hi%20Joy%26Co%21%20I%20have%20a%20question%20about%20your%20rentals." class="btn btn-primary" target="_blank" rel="noopener">
+                💬 WhatsApp
+              </a>
+            </div>
+
+            <hr style="margin: var(--space-2xl) 0; border: none; border-top: 1px solid var(--color-neutral-300);">
+
+            <h4 style="margin-bottom: 12px;">Email</h4>
+            <p style="margin-bottom: 6px;">
+              <a href="mailto:hello@joyco.co.za" style="color: var(--jc-gold); text-decoration: none;">hello@joyco.co.za</a>
+            </p>
+
+            <h4 style="margin-bottom: 12px;">Phone</h4>
+            <p style="margin-bottom: var(--space-2xl);">
+              <a href="tel:+27732026535" style="color: var(--jc-gold); text-decoration: none;">+27 732 026 535</a>
+            </p>
+
+            <p style="font-size: 0.9rem; color: var(--text-light);">Hours: Mon–Fri 9am–6pm SAST | Sat–Sun event-dependent</p>
+          </div>
+
+          <!-- Review Form -->
+          <div class="contact-section">
+            <h3>Leave a Review</h3>
+            <p>Tell us about your experience with Joy&Co. Your feedback helps us improve and helps others decide.</p>
+
+            <form id="review-form" class="review-form">
+              <div class="form-group">
+                <label for="name">Your Name *</label>
+                <input type="text" id="name" name="name" required placeholder="e.g. Sarah M.">
+              </div>
+
+              <div class="form-group">
+                <label for="location">Location (Optional)</label>
+                <input type="text" id="location" name="location" placeholder="e.g. Johannesburg">
+              </div>
+
+              <div class="form-group star-group">
+                <label>Rating *</label>
+                <div class="star-rating" id="star-rating">
+                  <input type="radio" id="star5" name="rating" value="5" class="star-input" required>
+                  <label for="star5" class="star-label">⭐</label>
+
+                  <input type="radio" id="star4" name="rating" value="4" class="star-input">
+                  <label for="star4" class="star-label">⭐</label>
+
+                  <input type="radio" id="star3" name="rating" value="3" class="star-input">
+                  <label for="star3" class="star-label">⭐</label>
+
+                  <input type="radio" id="star2" name="rating" value="2" class="star-input">
+                  <label for="star2" class="star-label">⭐</label>
+
+                  <input type="radio" id="star1" name="rating" value="1" class="star-input">
+                  <label for="star1" class="star-label">⭐</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="body">Your Review *</label>
+                <textarea id="body" name="body" required placeholder="Share your experience... What did you hire? How was the quality? Would you recommend us?"></textarea>
+              </div>
+
+              <button type="submit" class="submit-btn">Submit Review</button>
+              <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">Your review will be screened and published after approval.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: var(--color-neutral-900); color: var(--text-white); padding: var(--space-3xl) var(--space-lg); margin-top: var(--space-3xl);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-2xl); margin-bottom: var(--space-3xl);">
+        <div>
+          <h3 style="color: var(--text-white);">Joy&Co</h3>
+          <p>Premium party and event rentals across South Africa.</p>
+        </div>
+
+        <div>
+          <h4 style="color: var(--text-white); font-size: var(--fs-h5);">Quick Links</h4>
+          <ul style="list-style: none;">
+            <li><a href="/" style="color: var(--jc-gold);">Browse Items</a></li>
+            <li><a href="/packages.html" style="color: var(--jc-gold);">Packages</a></li>
+            <li><a href="/contact.html" style="color: var(--jc-gold);">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="color: var(--text-white); font-size: var(--fs-h5);">Contact</h4>
+          <p>
+            Email: <a href="mailto:hello@joyco.co.za" style="color: var(--jc-gold);">hello@joyco.co.za</a><br>
+            Phone: <a href="tel:+27732026535" style="color: var(--jc-gold);">+27 732 026 535</a>
+          </p>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-lg); text-align: center; color: var(--text-light);">
+        <p>&copy; 2025 Joy&Co. All rights reserved. | <a href="#" style="color: var(--jc-gold);">Privacy Policy</a> | Web Development: <a href="#" style="color: var(--jc-gold);">Diwainashe</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase.js"></script>
+
+  <!-- Modular Components -->
+  <script src="/js/nav.js"></script>
+  <script src="/js/contact-form.js"></script>
+
+  <!-- Page Boot Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      new NavManager({
+        burgerId: 'nav-burger',
+        linksId: 'nav-links',
+        logoTriggerId: 'logo-tap-trigger'
+      }).init();
+
+      new ContactForm('review-form').init();
+
+      const starRating = document.getElementById('star-rating');
+      starRating.style.flexDirection = 'row-reverse';
+    });
+  </script>
+
+  <style>
+    @keyframes slideIn {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</body>
+</html>

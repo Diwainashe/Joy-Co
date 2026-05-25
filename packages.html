@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Curated party packages from Joy&Co. Browse ready-made bundles of rental items for weddings, birthdays, corporate events and more.">
-  <meta name="keywords" content="party packages, wedding packages, event bundles, rental packages South Africa">
+  <meta name="description" content="Joy&Co Party & Event Rental Packages Gauteng. Browse curated bundles for weddings, birthdays, corporate events featuring inflatables, soft play, tables & chairs.">
+  <meta name="keywords" content="party packages Gauteng, wedding packages Johannesburg, birthday package hire, corporate event packages, event bundles South Africa, package deals party rentals">
+
+  <meta property="og:title" content="Party & Event Packages | Joy&Co Gauteng">
+  <meta property="og:description" content="Curated party rental packages across Gauteng. Perfect for weddings, birthdays, corporate events.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/uploads/e.jpeg">
+  <meta property="og:url" content="https://joyco.co.za/packages.html">
+  <meta property="og:site_name" content="Joy&Co">
+  <meta name="twitter:card" content="summary_large_image">
 
   <!-- Schema.org ItemList -->
   <script type="application/ld+json">
@@ -15,7 +23,7 @@
   }
   </script>
 
-  <title>Party & Event Packages | Joy&Co</title>
+  <title>Party & Event Rental Packages Gauteng | Joy&Co</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,20 +31,24 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/components.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="/uploads/c.jpeg">
+  <link rel="apple-touch-icon" href="/uploads/c.jpeg">
 </head>
 
 <body>
   <!-- Navigation -->
   <nav role="navigation" aria-label="Main navigation">
     <div class="nav-container">
-      <a href="/" class="nav-logo">
+      <a href="/" class="nav-logo" id="logo-tap-trigger">
         <span class="logo-j">J</span><span class="logo-o">o</span><span class="logo-y">y</span><span class="logo-amp">&amp;</span><span class="logo-c">C</span><span class="logo-co">o</span>
       </a>
-      <ul class="nav-links">
+      <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="nav-links">
         <li><a href="/#items">Browse Items</a></li>
         <li><a href="/packages.html">Packages</a></li>
-        <li><a href="/#contact">Contact</a></li>
-        <li><a href="/admin/index.html" class="btn btn-sm btn-secondary">Admin</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -122,7 +134,7 @@
       </div>
 
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-lg); text-align: center; color: var(--text-light);">
-        <p>&copy; 2024 Joy&Co. All rights reserved. | <a href="#" style="color: var(--color-blue);">Privacy Policy</a></p>
+        <p>&copy; 2025 Joy&Co. All rights reserved. | <a href="#" style="color: var(--jc-gold);">Privacy Policy</a> | Web Development: <a href="#" style="color: var(--jc-gold);">Diwainashe</a></p>
       </div>
     </div>
   </footer>
@@ -133,16 +145,17 @@
   <!-- Supabase Configuration -->
   <script src="/js/supabase.js"></script>
 
+  <!-- Modular Components -->
+  <script src="/js/nav.js"></script>
+
   <!-- Packages Script -->
   <script>
-    // Load and render packages from Supabase
     async function loadPackages() {
       const { client, formatZAR, getCardColorClass, getWhatsAppLink } = window.joycoSupabase;
       const gridElement = document.getElementById('packages-grid');
-      const businessPhone = '27XXXXXXXXX'; // Replace with actual WhatsApp business number
+      const businessPhone = '27732026535';
 
       try {
-        // Fetch packages with items from Supabase
         const { data: packages, error } = await client
           .from('packages')
           .select(`
@@ -164,7 +177,6 @@
           return;
         }
 
-        // Render packages
         gridElement.innerHTML = packages.map((pkg, index) => {
           const colorClass = getCardColorClass(index);
           const whatsappLink = getWhatsAppLink(pkg.name, businessPhone);
@@ -197,14 +209,19 @@
       }
     }
 
-    // Filter packages
-    document.getElementById('package-category').addEventListener('change', (e) => {
-      // TODO: Implement package filtering
-      console.log('Filter by occasion:', e.target.value);
+    document.addEventListener('DOMContentLoaded', () => {
+      new NavManager({
+        burgerId: 'nav-burger',
+        linksId: 'nav-links',
+        logoTriggerId: 'logo-tap-trigger'
+      }).init();
+
+      loadPackages();
     });
 
-    // Load packages when page loads
-    document.addEventListener('DOMContentLoaded', loadPackages);
+    document.getElementById('package-category').addEventListener('change', (e) => {
+      console.log('Filter by occasion:', e.target.value);
+    });
   </script>
 </body>
 </html>

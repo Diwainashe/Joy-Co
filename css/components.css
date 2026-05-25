@@ -431,3 +431,120 @@ input[type="radio"] {
     padding: var(--space-sm);
   }
 }
+
+/* ===== CAROUSEL COMPONENT ===== */
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  will-change: transform;
+  justify-content: center;
+}
+
+.carousel-wrapper.scrollable .carousel-track {
+  justify-content: flex-start;
+}
+
+.carousel-slide {
+  flex: 0 0 auto;
+  width: 300px;
+  margin-right: 16px;
+}
+
+.carousel-slide img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  display: block;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-lg);
+  padding: 0 var(--space-md);
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-neutral-300);
+  cursor: pointer;
+  transition: background 0.2s;
+  border: none;
+  padding: 0;
+}
+
+.carousel-dot.active {
+  background: var(--jc-gold);
+}
+
+.carousel-dot:hover {
+  background: var(--color-neutral-400);
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-btn--prev {
+  left: 12px;
+}
+
+.carousel-btn--next {
+  right: 12px;
+}
+
+@media (max-width: 640px) {
+  .carousel-slide {
+    width: 240px;
+    margin-right: 12px;
+  }
+
+  .carousel-slide img {
+    width: 240px;
+    height: 240px;
+  }
+
+  .carousel-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .carousel-btn--prev {
+    left: 8px;
+  }
+
+  .carousel-btn--next {
+    right: 8px;
+  }
+}
