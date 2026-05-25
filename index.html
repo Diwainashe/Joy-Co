@@ -277,13 +277,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Supabase Configuration -->
-  <script src="/js/supabase.js"></script>
+  <script src="./js/supabase.js"></script>
 
   <!-- Modular Components -->
-  <script src="/js/carousel.js"></script>
-  <script src="/js/nav.js"></script>
-  <script src="/js/items.js"></script>
-  <script src="/js/reviews-carousel.js"></script>
+  <script src="./js/carousel.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/items.js"></script>
+  <script src="./js/reviews-carousel.js"></script>
 
   <!-- Hidden Admin Access via Keypress -->
   <script>
@@ -296,7 +296,7 @@
         clearTimeout(adminKeyTimeout);
         adminKeyTimeout = setTimeout(() => { adminKeySequence = ''; }, 3000);
         if (adminKeySequence === 'joy') {
-          window.location.href = '/admin/index.html';
+          window.location.href = './admin/index.html';
           adminKeySequence = '';
         }
       }

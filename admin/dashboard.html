@@ -133,9 +133,9 @@
     <div class="nav-container">
       <a href="/" class="nav-logo">Joy&Co 🎉</a>
       <ul class="nav-links">
-        <li><a href="/admin/dashboard.html">Dashboard</a></li>
-        <li><a href="/admin/items.html">Items</a></li>
-        <li><a href="/admin/packages.html">Packages</a></li>
+        <li><a href="./dashboard.html">Dashboard</a></li>
+        <li><a href="./items.html">Items</a></li>
+        <li><a href="./packages.html">Packages</a></li>
       </ul>
     </div>
   </nav>
@@ -169,10 +169,10 @@
 
     <!-- Quick Actions -->
     <div class="quick-actions">
-      <a href="/admin/items.html" class="btn btn-primary">
+      <a href="./items.html" class="btn btn-primary">
         ➕ Add New Item
       </a>
-      <a href="/admin/packages.html" class="btn btn-success">
+      <a href="./packages.html" class="btn btn-success">
         🎁 Create Package
       </a>
       <a href="/" class="btn btn-secondary">
@@ -255,7 +255,7 @@
                 <div class="item-price">${formatZAR(item.price_zar)}</div>
               </div>
             `).join('')
-          : '<div class="empty-state">No items yet. <a href="/admin/items.html">Add one now →</a></div>';
+          : '<div class="empty-state">No items yet. <a href="./items.html">Add one now →</a></div>';
 
         document.getElementById('recent-items').innerHTML = recentItemsHtml;
 
@@ -272,7 +272,7 @@
                 <div class="item-price">${formatZAR(pkg.price_zar)}</div>
               </div>
             `).join('')
-          : '<div class="empty-state">No packages yet. <a href="/admin/packages.html">Create one now →</a></div>';
+          : '<div class="empty-state">No packages yet. <a href="./packages.html">Create one now →</a></div>';
 
         document.getElementById('recent-packages').innerHTML = recentPackagesHtml;
 
@@ -287,7 +287,7 @@
                     Only ${item.stock_qty} in stock
                   </p>
                 </div>
-                <a href="/admin/items.html" class="btn btn-sm btn-secondary">Edit</a>
+                <a href="./items.html" class="btn btn-sm btn-secondary">Edit</a>
               </div>
             `).join('')
           : '<div class="empty-state">All items well-stocked!</div>';
