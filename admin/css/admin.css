@@ -13,13 +13,13 @@ body {
   min-height: 100vh;
 }
 
-/* ===== SIDEBAR — intentionally fixed dark regardless of theme ===== */
+/* ===== SIDEBAR — theme-aware ===== */
 .admin-sidebar {
   width: 260px;
-  background: #0f0f0f;
-  color: #ffffff;
+  background: var(--bg-2);
+  color: var(--fg);
   padding: 24px 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -30,9 +30,9 @@ body {
 
 .admin-sidebar-header {
   padding: 0 20px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--line);
   margin-bottom: 24px;
-  color: #ffffff;
+  color: var(--fg);
 }
 
 .admin-logo {
@@ -42,14 +42,14 @@ body {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  color: #ffffff;
+  color: var(--fg);
 }
 
 .admin-logo-emoji { font-size: 24px; }
 
 .admin-tagline {
   font-size: 11px;
-  color: #888888;
+  color: var(--fg-faint);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -71,7 +71,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 12px 20px;
-  color: #cccccc;
+  color: var(--fg-muted);
   text-decoration: none;
   transition: all 0.2s ease;
   border-left: 3px solid transparent;
@@ -81,20 +81,20 @@ body {
 }
 
 .admin-nav-link:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: #ffffff;
+  background: var(--hover-bg);
+  color: var(--fg);
 }
 
 .admin-nav-link.active {
-  background: rgba(255, 110, 180, 0.15);
-  border-left-color: #ff6eb4;
-  color: #ffffff;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-left-color: var(--accent);
+  color: var(--fg);
   font-weight: 600;
 }
 
 .admin-sidebar-footer {
   padding: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--line);
   margin-top: auto;
 }
 
