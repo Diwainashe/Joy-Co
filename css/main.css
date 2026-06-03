@@ -737,6 +737,15 @@ section { padding: var(--space-5xl) var(--space-lg); }
   border-color: var(--line-strong);
 }
 
+/* ===== THEME-AWARE LOGO ===== */
+.nav-logo-light { display: none; }
+.nav-logo-noir  { display: block; }
+
+[data-theme="cream"] .nav-logo-noir,
+[data-theme="pastels"] .nav-logo-noir  { display: none; }
+[data-theme="cream"] .nav-logo-light,
+[data-theme="pastels"] .nav-logo-light { display: block; }
+
 /* Page fade in */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(6px); }
