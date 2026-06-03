@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="noir">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Dancing+Script:wght@600&family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Dancing+Script:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="./css/main.css">
   <link rel="stylesheet" href="./css/components.css">
@@ -41,21 +41,22 @@
   <!-- Navigation -->
   <nav role="navigation" aria-label="Main navigation">
     <div class="nav-container">
-      <a href="/" class="nav-logo" id="logo-tap-trigger">
-        <span class="logo-j">J</span><span class="logo-o">o</span><span class="logo-y">y</span><span class="logo-amp">&amp;</span><span class="logo-c">C</span><span class="logo-co">o</span>
-      </a>
+      <div class="nav-logo" id="logo-tap-trigger">
+        <img src="./uploads/b.jpeg" alt="Joy&Co" style="max-height: 44px; width: auto; display: block;">
+      </div>
       <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
       <ul class="nav-links" id="nav-links">
         <li><a href="./index.html#items">Browse Items</a></li>
         <li><a href="./packages.html">Packages</a></li>
+        <li><a href="./gallery.html">Gallery</a></li>
         <li><a href="./contact.html">Contact</a></li>
       </ul>
     </div>
   </nav>
 
   <!-- Page Header -->
-  <section style="background: linear-gradient(145deg, #0a0a0a 0%, #1a0e18 40%, #150b20 70%, #0d0b10 100%); color: white; padding: var(--space-3xl) var(--space-lg); position: relative;">
-    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 30% 60%, rgba(200,154,58,0.12) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 70% 40%, rgba(176,148,200,0.10) 0%, transparent 70%); pointer-events: none;"></div>
+  <section style="background: var(--bg); border-bottom: 1px solid var(--line); padding: var(--space-3xl) var(--space-lg); position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 30% 60%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 70% 40%, color-mix(in srgb, var(--accent-4) 7%, transparent) 0%, transparent 70%); pointer-events: none;"></div>
     <div class="container" style="position: relative; z-index: 1;">
       <h1>Curated <em class="hero-script">Packages.</em></h1>
       <p class="hero-eyebrow">Ready-made bundles for your perfect celebration</p>
@@ -91,14 +92,14 @@
     </section>
 
     <!-- CTA Section -->
-    <section style="background: var(--color-neutral-50);">
+    <section style="background: var(--bg-card); border-top: 1px solid var(--line);">
       <div class="container">
         <div style="text-align: center;">
           <h2>Can't find the perfect package?</h2>
-          <p style="margin-bottom: var(--space-lg); color: var(--text-secondary);">
+          <p style="margin-bottom: var(--space-lg); color: var(--fg-muted);">
             Contact us and we can create a custom package tailored to your event needs.
           </p>
-          <a href="https://wa.me/27XXXXXXXXX" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+          <a href="https://wa.me/27732026535?text=Hi%20Joy%26Co%21%20I%27d%20like%20a%20custom%20package." class="btn btn-primary btn-lg" target="_blank" rel="noopener">
             💬 Create Custom Package
           </a>
         </div>
@@ -107,34 +108,46 @@
   </main>
 
   <!-- Footer -->
-  <footer style="background: var(--color-neutral-900); color: var(--text-white); padding: var(--space-3xl) var(--space-lg);">
+  <footer style="background: var(--bg); border-top: 1px solid var(--line); padding: 60px var(--space-lg) 40px;">
     <div class="container">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-2xl); margin-bottom: var(--space-3xl);">
         <div>
-          <h3 style="color: var(--text-white);">Joy&Co</h3>
-          <p>Premium party and event rentals across South Africa.</p>
+          <h3 style="color: var(--fg); font-size: 22px; font-weight: 400;">Joy&amp;Co</h3>
+          <p style="color: var(--fg-muted); font-size: 13px; line-height: 1.7; margin-top: var(--space-md);">A curated rental atelier for life's most celebrated moments.</p>
         </div>
 
         <div>
-          <h4 style="color: var(--text-white); font-size: var(--fs-h5);">Quick Links</h4>
-          <ul style="list-style: none;">
-            <li><a href="/#items" style="color: var(--color-blue);">Browse Items</a></li>
-            <li><a href="/packages.html" style="color: var(--color-blue);">Packages</a></li>
-            <li><a href="./admin/index.html" style="color: var(--color-blue);">Admin Login</a></li>
+          <div class="eyebrow-gold" style="margin-bottom: 18px;">Quick Links</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+            <li><a href="./index.html#items" style="color: var(--fg-muted); font-size: 13px;">Browse Items</a></li>
+            <li><a href="./packages.html" style="color: var(--fg-muted); font-size: 13px;">Packages</a></li>
+            <li><a href="./contact.html" style="color: var(--fg-muted); font-size: 13px;">Contact</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 style="color: var(--text-white); font-size: var(--fs-h5);">Contact</h4>
-          <p>
-            Email: <a href="mailto:hello@joyco.co.za" style="color: var(--color-blue);">hello@joyco.co.za</a><br>
-            Phone: <a href="tel:+27XXXXXXXXX" style="color: var(--color-blue);">+27 XX XXX-XXXX</a>
-          </p>
+          <div class="eyebrow-gold" style="margin-bottom: 18px;">Contact</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+            <li><a href="mailto:mariemarxk@gmail.com" style="color: var(--fg-muted); font-size: 13px;">mariemarxk@gmail.com</a></li>
+            <li><a href="tel:+27732026535" style="color: var(--fg-muted); font-size: 13px;">+27 732 026 535</a></li>
+            <li style="color: var(--fg-muted); font-size: 13px;">Johannesburg, Gauteng</li>
+          </ul>
+        </div>
+
+        <div id="newsletter-footer">
+          <div class="eyebrow-gold" style="margin-bottom: 18px;">Newsletter</div>
+          <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: var(--space-md); line-height: 1.6;">Get updates on new items and exclusive offers.</p>
+          <form style="display: flex; flex-direction: column; gap: var(--space-sm);">
+            <input type="email" placeholder="Your email" required>
+            <button type="submit" class="btn btn-primary" style="font-size: 12px;">Subscribe</button>
+          </form>
+          <div class="newsletter-message" style="display: none; margin-top: var(--space-sm); font-size: 13px; color: var(--accent);"></div>
         </div>
       </div>
 
-      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-lg); text-align: center; color: var(--text-light);">
-        <p>&copy; <span id="year"></span> Joy&Co. All rights reserved. | <a href="#" style="color: var(--jc-gold);">Privacy Policy</a> | Web Development: <a href="#" style="color: var(--jc-gold);">Diwainashe</a></p>
+      <div style="border-top: 1px solid var(--line); padding-top: var(--space-lg); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <p style="font-size: 11px; color: var(--fg-faint); letter-spacing: 0.14em; text-transform: uppercase; margin: 0;">&copy; <span id="year"></span> Joy&amp;Co</p>
+        <p style="font-size: 11px; color: var(--fg-faint); letter-spacing: 0.14em; text-transform: uppercase; margin: 0;">Delivering Joy since 2023</p>
       </div>
     </div>
   </footer>
@@ -145,8 +158,12 @@
   <!-- Supabase Configuration -->
   <script src="./js/supabase.js"></script>
 
+  <!-- Theme System -->
+  <script src="./js/theme.js"></script>
+
   <!-- Modular Components -->
   <script src="./js/nav.js"></script>
+  <script src="./js/newsletter.js"></script>
 
   <!-- Packages Script -->
   <script>
@@ -209,7 +226,8 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
+      await new ThemeManager().init();
       document.getElementById('year').textContent = new Date().getFullYear();
 
       new NavManager({
@@ -217,6 +235,8 @@
         linksId: 'nav-links',
         logoTriggerId: 'logo-tap-trigger'
       }).init();
+
+      new NewsletterForm('newsletter-footer').init();
 
       loadPackages();
     });

@@ -37,7 +37,6 @@ class ReviewsCarousel {
     this.container.innerHTML = `
       <div class="card" style="text-align: center; padding: var(--space-2xl); background: var(--color-neutral-50);">
         <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">Be the first to leave a review! Share your Joy&Co experience.</p>
-        <a href="/contact.html" class="btn btn-primary" style="display: inline-block;">Leave a Review</a>
       </div>
     `;
   }

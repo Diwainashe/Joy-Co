@@ -49,9 +49,9 @@
 .skeleton {
   background: linear-gradient(
     90deg,
-    var(--color-neutral-200) 0%,
-    var(--color-neutral-100) 50%,
-    var(--color-neutral-200) 100%
+    var(--bg-card) 0%,
+    var(--bg-card-2) 50%,
+    var(--bg-card) 100%
   );
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
@@ -98,8 +98,10 @@
 }
 
 .modal-content {
-  background: var(--bg-white);
-  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 0;
   padding: var(--space-2xl);
   max-width: 600px;
   width: 100%;
@@ -113,8 +115,8 @@
 .modal-close {
   float: right;
   font-size: 28px;
-  font-weight: bold;
-  color: var(--text-secondary);
+  font-weight: 300;
+  color: var(--fg-muted);
   cursor: pointer;
   border: none;
   background: none;
@@ -129,7 +131,7 @@
 }
 
 .modal-close:hover {
-  color: var(--text-primary);
+  color: var(--fg);
 }
 
 @keyframes fadeIn {
@@ -341,10 +343,12 @@ input[type="radio"] {
 }
 
 .toast {
-  background: var(--bg-white);
-  border-left: 4px solid var(--color-blue);
+  background: var(--bg-card);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
   padding: var(--space-lg);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   box-shadow: var(--shadow-lg);
   min-width: 300px;
   max-width: 400px;
@@ -436,7 +440,7 @@ input[type="radio"] {
 .carousel-wrapper {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius-lg);
+  border-radius: 0;
 }
 
 .carousel-track {
@@ -473,10 +477,10 @@ input[type="radio"] {
 }
 
 .carousel-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--color-neutral-300);
+  background: var(--line-strong);
   cursor: pointer;
   transition: background 0.2s;
   border: none;
@@ -484,35 +488,37 @@ input[type="radio"] {
 }
 
 .carousel-dot.active {
-  background: var(--jc-gold);
+  background: var(--accent);
+  width: 18px;
+  border-radius: 3px;
 }
 
 .carousel-dot:hover {
-  background: var(--color-neutral-400);
+  background: var(--fg-muted);
 }
 
 .carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
+  background: var(--bg-card);
+  color: var(--fg);
+  border: 1px solid var(--line);
   border-radius: 50%;
   width: 36px;
   height: 36px;
   cursor: pointer;
   z-index: 2;
-  font-size: 1.2rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .carousel-btn:hover {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--hover-bg);
+  border-color: var(--line-strong);
 }
 
 .carousel-btn--prev {
