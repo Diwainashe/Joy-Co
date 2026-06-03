@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="noir">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Joy&Co gallery — see our party and event setups across Gauteng. Weddings, birthdays, corporate events and more.">
+  <meta name="keywords" content="party rental gallery, event photos Gauteng, joy and co setups, inflatable hire photos, soft play gallery">
+  <meta property="og:title" content="Gallery | Joy&Co Party & Event Rentals">
+  <meta property="og:description" content="A glimpse into the celebrations we've helped create across Gauteng.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/uploads/e.jpeg">
+  <meta property="og:url" content="https://joyco.co.za/gallery.html">
+  <meta property="og:site_name" content="Joy&Co">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <title>Gallery | Joy&Co Party & Event Rentals Gauteng</title>
+
+  <link rel="icon" type="image/jpeg" href="./uploads/c.jpeg">
+  <link rel="apple-touch-icon" href="./uploads/c.jpeg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Dancing+Script:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/components.css">
+
+  <style>
+    .gallery-grid {
+      columns: 3 260px;
+      column-gap: 14px;
+    }
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 14px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.04); }
+    .gallery-item__overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 12px 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: #fff;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-item__overlay { opacity: 1; }
+
+    .gallery-filter-btn {
+      padding: 7px 18px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      border: 1px solid var(--line);
+      background: var(--bg-card);
+      color: var(--fg-muted);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .gallery-filter-btn:hover { border-color: var(--line-strong); color: var(--fg); }
+    .gallery-filter-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+    #gallery-lightbox {
+      border: none;
+      background: transparent;
+      padding: 0;
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #gallery-lightbox::backdrop { background: rgba(0,0,0,0.93); }
+    .lightbox-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      padding: 20px;
+      position: relative;
+    }
+    #lightbox-img {
+      max-height: 80vh;
+      max-width: 88vw;
+      object-fit: contain;
+      display: block;
+    }
+    #lightbox-caption {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.05em;
+      min-height: 20px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px; right: 28px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 34px;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      padding: 0;
+    }
+    .lightbox-close:hover { opacity: 1; }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.18); }
+    #lightbox-prev { left: 20px; }
+    #lightbox-next { right: 20px; }
+
+    @media (max-width: 640px) {
+      .gallery-grid { columns: 2 130px; column-gap: 10px; }
+      .gallery-item { margin-bottom: 10px; }
+      #lightbox-prev { left: 8px; }
+      #lightbox-next { right: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <div class="nav-logo" id="logo-tap-trigger">
+        <img src="./uploads/a.jpeg" alt="Joy&Co" class="nav-logo-noir" style="max-height: 44px; width: auto;">
+        <img src="./uploads/b.jpeg" alt="Joy&Co" class="nav-logo-light" style="max-height: 44px; width: auto;">
+      </div>
+      <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="./index.html#items">Browse Items</a></li>
+        <li><a href="./packages.html">Packages</a></li>
+        <li><a href="./gallery.html">Gallery</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section style="background: var(--bg); border-bottom: 1px solid var(--line); padding: var(--space-3xl) var(--space-lg); position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 30% 60%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 70% 40%, color-mix(in srgb, var(--accent-4) 7%, transparent) 0%, transparent 70%); pointer-events: none;"></div>
+    <div class="container" style="position: relative; z-index: 1;">
+      <span class="eyebrow" style="display: block; margin-bottom: 12px;">Our Work</span>
+      <h1>The <em class="hero-script">Gallery.</em></h1>
+      <p style="color: var(--fg-muted); max-width: 520px; margin-top: 12px;">A glimpse into the celebrations we've helped create across Gauteng.</p>
+    </div>
+  </section>
+
+  <!-- Category Filter Bar -->
+  <section style="background: var(--bg-card); border-bottom: 1px solid var(--line); padding: var(--space-md) var(--space-lg);">
+    <div class="container">
+      <div id="gallery-filters" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="gallery-filter-btn active" data-category="">All</button>
+        <button class="gallery-filter-btn" data-category="weddings">Weddings</button>
+        <button class="gallery-filter-btn" data-category="birthdays">Birthdays</button>
+        <button class="gallery-filter-btn" data-category="corporate">Corporate</button>
+        <button class="gallery-filter-btn" data-category="general">General</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Grid -->
+  <main>
+    <section style="padding: var(--space-3xl) var(--space-lg);">
+      <div class="container">
+        <div id="gallery-grid" class="gallery-grid">
+          <p style="color: var(--fg-muted);">Loading...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <dialog id="gallery-lightbox">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+      <button class="lightbox-nav" id="lightbox-prev" aria-label="Previous image">&#8249;</button>
+      <img id="lightbox-img" src="" alt="">
+      <p id="lightbox-caption"></p>
+      <button class="lightbox-nav" id="lightbox-next" aria-label="Next image">&#8250;</button>
+    </div>
+  </dialog>
+
+  <!-- Footer -->
+  <footer style="background: var(--bg); border-top: 1px solid var(--line); padding: 60px var(--space-lg) 40px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-2xl); margin-bottom: var(--space-3xl);">
+        <div>
+          <h3 style="color: var(--fg); font-size: 22px; font-weight: 400;">Joy&amp;Co</h3>
+          <p style="color: var(--fg-muted); font-size: 13px; line-height: 1.7; margin-top: var(--space-md);">A curated rental atelier for life's most celebrated moments.</p>
+        </div>
+        <div>
+          <div class="eyebrow-gold" style="margin-bottom: 18px;">Quick Links</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+            <li><a href="./index.html#items" style="color: var(--fg-muted); font-size: 13px;">Browse Items</a></li>
+            <li><a href="./packages.html" style="color: var(--fg-muted); font-size: 13px;">Packages</a></li>
+            <li><a href="./gallery.html" style="color: var(--fg-muted); font-size: 13px;">Gallery</a></li>
+            <li><a href="./contact.html" style="color: var(--fg-muted); font-size: 13px;">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="eyebrow-gold" style="margin-bottom: 18px;">Contact</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+            <li><a href="mailto:mariemarxk@gmail.com" style="color: var(--fg-muted); font-size: 13px;">mariemarxk@gmail.com</a></li>
+            <li><a href="tel:+27732026535" style="color: var(--fg-muted); font-size: 13px;">+27 732 026 535</a></li>
+            <li style="color: var(--fg-muted); font-size: 13px;">Johannesburg, Gauteng</li>
+          </ul>
+        </div>
+        <div id="newsletter-footer">
+          <div class="eyebrow-gold" style="margin-bottom: 18px;">Newsletter</div>
+          <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: var(--space-md); line-height: 1.6;">Get updates on new items and exclusive offers.</p>
+          <form style="display: flex; flex-direction: column; gap: var(--space-sm);">
+            <input type="email" placeholder="Your email" required>
+            <button type="submit" class="btn btn-primary" style="font-size: 12px;">Subscribe</button>
+          </form>
+          <div class="newsletter-message" style="display: none; margin-top: var(--space-sm); font-size: 13px; color: var(--accent);"></div>
+        </div>
+      </div>
+      <div style="border-top: 1px solid var(--line); padding-top: var(--space-lg); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <p style="font-size: 11px; color: var(--fg-faint); letter-spacing: 0.14em; text-transform: uppercase; margin: 0;">&copy; <span id="year"></span> Joy&amp;Co</p>
+        <p style="font-size: 11px; color: var(--fg-faint); letter-spacing: 0.14em; text-transform: uppercase; margin: 0;">Delivering Joy since 2023</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./js/supabase.js"></script>
+  <script src="./js/theme.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/newsletter.js"></script>
+
+  <script>
+    let galleryItems = [];
+    let currentLightboxIndex = 0;
+    let activeCategory = '';
+
+    async function loadGallery() {
+      const { client } = window.joycoSupabase;
+      const grid = document.getElementById('gallery-grid');
+
+      let query = client
+        .from('gallery')
+        .select('id, title, caption, image_url, category')
+        .eq('published', true)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+
+      if (activeCategory) query = query.eq('category', activeCategory);
+
+      const { data, error } = await query;
+
+      if (error || !data?.length) {
+        grid.innerHTML = '<p style="color: var(--fg-muted); text-align: center; padding: var(--space-3xl) 0; grid-column: 1/-1;">No gallery images yet — check back soon!</p>';
+        return;
+      }
+
+      galleryItems = data;
+      grid.innerHTML = data.map((item, i) => `
+        <div class="gallery-item" data-index="${i}" onclick="openLightbox(${i})">
+          <img src="${item.image_url}" alt="${item.title || 'Joy&Co event'}" loading="lazy">
+          ${item.title ? `<div class="gallery-item__overlay"><span>${item.title}</span></div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function openLightbox(index) {
+      currentLightboxIndex = index;
+      const item = galleryItems[index];
+      document.getElementById('lightbox-img').src = item.image_url;
+      document.getElementById('lightbox-img').alt = item.title || 'Joy&Co event';
+      document.getElementById('lightbox-caption').textContent = item.caption || item.title || '';
+      document.getElementById('gallery-lightbox').showModal();
+    }
+
+    document.getElementById('lightbox-close').addEventListener('click', () => {
+      document.getElementById('gallery-lightbox').close();
+    });
+    document.getElementById('lightbox-prev').addEventListener('click', () => {
+      openLightbox((currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length);
+    });
+    document.getElementById('lightbox-next').addEventListener('click', () => {
+      openLightbox((currentLightboxIndex + 1) % galleryItems.length);
+    });
+    document.getElementById('gallery-lightbox').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.close();
+    });
+    document.addEventListener('keydown', (e) => {
+      const lb = document.getElementById('gallery-lightbox');
+      if (!lb.open) return;
+      if (e.key === 'ArrowLeft') openLightbox((currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length);
+      if (e.key === 'ArrowRight') openLightbox((currentLightboxIndex + 1) % galleryItems.length);
+    });
+
+    document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.dataset.category;
+        loadGallery();
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await new ThemeManager().init();
+      document.getElementById('year').textContent = new Date().getFullYear();
+      new NavManager({
+        burgerId: 'nav-burger',
+        linksId: 'nav-links',
+        logoTriggerId: 'logo-tap-trigger'
+      }).init();
+      new NewsletterForm('newsletter-footer').init();
+      loadGallery();
+    });
+  </script>
+</body>
+</html>

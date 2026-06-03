@@ -110,6 +110,12 @@
           </a>
         </li>
         <li class="admin-nav-item">
+          <a href="#" class="admin-nav-link" data-section="gallery">
+            <span>🖼️</span>
+            <span>Gallery</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
           <a href="#" class="admin-nav-link" data-section="settings">
             <span>⚙️</span>
             <span>Settings</span>
@@ -448,6 +454,77 @@
                     Loading approved reviews...
                   </td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery-section" style="display: none;">
+          <div class="admin-section-header">
+            <h2>Gallery</h2>
+          </div>
+
+          <!-- Upload Form -->
+          <div class="settings-card" style="margin-bottom: 24px;">
+            <h3>Upload Image</h3>
+            <form id="gallery-upload-form">
+              <div id="gallery-upload-zone" class="file-upload" style="margin-bottom: 8px;">
+                <input type="file" id="gallery-file-input" accept="image/*" style="display: none;">
+                <p style="margin: 0; color: var(--text-secondary); font-size: 14px;">Click or drag an image here to upload</p>
+              </div>
+              <div id="gallery-image-preview" style="margin-bottom: 16px;"></div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="admin-form-group">
+                  <label for="gallery-title">Title (optional)</label>
+                  <input type="text" id="gallery-title" placeholder="e.g. Birthday table setup">
+                </div>
+                <div class="admin-form-group">
+                  <label for="gallery-category">Category</label>
+                  <select id="gallery-category">
+                    <option value="general">General</option>
+                    <option value="weddings">Weddings</option>
+                    <option value="birthdays">Birthdays</option>
+                    <option value="corporate">Corporate</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 16px;">
+                <label for="gallery-caption">Caption (optional)</label>
+                <input type="text" id="gallery-caption" placeholder="Short description shown in lightbox">
+              </div>
+
+              <div style="display: flex; align-items: flex-end; gap: 24px; margin-bottom: 20px;">
+                <div class="admin-form-group" style="margin: 0; flex: 0 0 auto;">
+                  <label for="gallery-sort-order">Sort Order</label>
+                  <input type="number" id="gallery-sort-order" value="0" min="0" style="width: 80px;">
+                </div>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding-bottom: 2px;">
+                  <input type="checkbox" id="gallery-published" checked>
+                  <span style="font-size: 14px;">Published (visible on site)</span>
+                </label>
+              </div>
+
+              <button type="submit" id="gallery-submit-btn" class="btn btn-primary">Upload to Gallery</button>
+            </form>
+          </div>
+
+          <!-- Gallery Table -->
+          <div class="admin-section-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="gallery-tbody">
+                <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-secondary);">Loading...</td></tr>
               </tbody>
             </table>
           </div>

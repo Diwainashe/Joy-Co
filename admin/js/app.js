@@ -6,6 +6,7 @@ import { AddItemSection } from './components/add-item.js';
 import { PackagesSection } from './components/packages.js';
 import { ReviewsSection } from './components/reviews.js';
 import { SettingsSection } from './components/settings.js';
+import { GallerySection } from './components/gallery.js';
 
 class AdminApp {
   constructor() {
@@ -100,6 +101,7 @@ class AdminApp {
       'add-item': new AddItemSection(this.supabase, this.navigate.bind(this)),
       packages: new PackagesSection(this.supabase, this.navigate.bind(this)),
       reviews: new ReviewsSection(this.supabase, this.navigate.bind(this)),
+      gallery: new GallerySection(this.supabase, this.navigate.bind(this)),
       settings: new SettingsSection(this.supabase, this.navigate.bind(this)),
     };
 
@@ -141,6 +143,7 @@ class AdminApp {
       'add-item': 'Add Item',
       'packages': 'Packages',
       'reviews': 'Reviews',
+      'gallery': 'Gallery',
       'settings': 'Settings'
     };
     return titles[sectionName] || 'Admin';
