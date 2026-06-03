@@ -19,6 +19,8 @@ class AdminApp {
   }
 
   async init() {
+    if (window.ThemeManager) await new ThemeManager().init();
+
     if (!window.joycoSupabase?.client) {
       console.error('Supabase client not initialized');
       return;
